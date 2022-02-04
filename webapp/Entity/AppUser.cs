@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Identity;
 
-namespace invoice.Entity;
+namespace webapp.Entity;
 
 public class AppUser : IdentityUser<Guid>
 {
