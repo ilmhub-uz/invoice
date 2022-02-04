@@ -19,5 +19,13 @@ public class AppDbContext : IdentityDbContext
                 .HasForeignKey(i => i.OwnerId)
                 .OnDelete(DeleteBehavior.Cascade);
         });
+
+        builder.Entity<AppUser>(au => 
+        {
+            au.HasMany(u => u.Contacts)
+                .WithOne(i => i.Owner)
+                .HasForeignKey(i => i.OwnerId)
+                .OnDelete(DeleteBehavior.Cascade);
+        });
     }
 }
