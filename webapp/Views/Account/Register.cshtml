@@ -1,0 +1,49 @@
+@model webapp.ViewModels.RegisterViewModel;
+
+@{
+    Layout = "_AuthLayout";
+}
+
+<form class="form-signin" method="post" asp-action="Register" asp-controller="Account">
+    <input type="text" asp-for="@Model.ReturnUrl" hidden="true">
+    <p>
+        <h3>Account yaratish</h3>
+    </p>
+
+    <div class="form-label-group">
+        <input asp-for="Fullname" type="text" id="inputName" class="form-control" placeholder="Fullname" required="">
+        <label class="text-muted" asp-for="Fullname" for="inputName"></label>
+        <span asp-validation-for="Fullname" class="text-danger show"></span>
+    </div>
+
+    <div class="form-label-group">
+        <input asp-for="Email" type="email" id="inputEmail" class="form-control" placeholder="Email address" required="">
+        <label class="text-muted" asp-for="Email" for="inputEmail"></label>
+        <span asp-validation-for="Email" class="text-danger"></span>
+    </div>
+
+    <div class="form-label-group">
+        <input asp-for="Phone" type="tel" id="inputPhone" class="form-control" placeholder="Phone" required="">
+        <label class="text-muted" asp-for="Phone" for="inputPhone"></label>
+        <span asp-validation-for="Phone" class="text-danger"></span>
+    </div>
+
+    <div class="form-label-group">
+        <input asp-for="Password" type="password" id="inputPassword" class="form-control" placeholder="Password" required="">
+        <label class="text-muted" asp-for="Password" for="inputPassword"></label>
+        <span asp-validation-for="Password" class="text-danger"></span>
+    </div>
+
+    <div class="form-label-group">
+        <input asp-for="ConfirmPassword" type="password" id="inputConfirmPassword"  class="form-control" placeholder="Password" required="">
+        <label class="text-muted" asp-for="ConfirmPassword" for="inputConfirmPassword"></label>
+        <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+    </div>
+
+    <button class="btn btn-lg btn-primary btn-block" type="submit">Royhatdan otish</button>
+    <p></p>
+    <p>Accountingiz bormi? <a class="btn btn-success" rel="stylesheet" href="/Login?returnUrl=@Model.ReturnUrl">Kirish</a>
+        
+    </p>
+    <p class="mt-5 mb-3 text-muted text-center">© @DateTimeOffset.Now.Year</p>
+</form> 
