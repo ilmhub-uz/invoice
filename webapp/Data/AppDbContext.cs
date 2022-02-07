@@ -3,25 +3,31 @@ using Microsoft.EntityFrameworkCore;
 using webapp.Entity;
 
 namespace webapp.Data;
-public class AppDbContext : IdentityDbContext<AppUser>
+public class AppDbContext : IdentityDbContext
 {
+    public DbSet<Organization> Organizations { get; set; }
+    public DbSet<Contact> Contacts { get; set; }
     public AppDbContext(DbContextOptions options)
         : base(options) { }
-    public DbSet<Organization> Organizations { get; set; }
-    public DbSet<Contact> Contacts { get => Contacts; set => Contacts = value; }
-    public AppDbContext(DbSet<Contact> contacts)
-    {
-        this.Contacts = contacts;
-    }
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
         base.OnModelCreating(builder);
-
-        builder.Entity<AppUser>()
-                .HasMany(u => u.Organizations)
-                .WithOne()
+        
+        builder.Entity<AppUser>(au => 
+        {
+            au.HasMany(u => u.Organizations)
+                .WithOne(i => i.Owner)
+                .HasForeignKey(i => i.OwnerId)
                 .OnDelete(DeleteBehavior.Cascade);
-        }
+        });
+
+        builder.Entity<AppUser>(au => 
+        {
+            au.HasMany(u => u.Contacts)
+                .WithOne(i => i.Owner)
+                .HasForeignKey(i => i.OwnerId)
+                .OnDelete(DeleteBehavior.Cascade);
+        });
     }
 }

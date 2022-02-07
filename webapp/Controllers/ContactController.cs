@@ -2,6 +2,7 @@
 using System;
 using Microsoft.AspNetCore.Mvc;
 using webapp.Data;
+using webapp.Entity;
 
 namespace webapp.Controllers;
 
@@ -20,30 +21,63 @@ public class ContactController : Controller
     [HttpGet]
     public IActionResult GetContact(Guid Id)
     {
-       
-       
-       return View();
+       var contact =_dbcontext.Contacts.FirstOrDefault(w=>w.Id==Id);
+        if(contact==null){
+            return NotFound();
+        }
+        return View(contact);
+      
     }
     [HttpGet]
     public IActionResult GetContacts()
     {
-        return View();
+        var contacts= _dbcontext.Contacts.ToList();
+        if(contacts==null){
+            return NotFound();
+        }
+        return View(contacts);
     }
 
     [HttpPost]
-    public IActionResult Contact()
+    public IActionResult Contact([FromForm] Contact model)
     {
+        if(!ModelState.IsValid)
+        {
+            return View(model);
+        }
+        _dbcontext.Contacts.Add(model);
+        _dbcontext.SaveChanges();
         return View();
     }
     [HttpPut]
     public IActionResult Contact(Guid ID)
     {
-        return View();
+        try
+        {
+          var contact=_dbcontext.Contacts.FirstOrDefault(p=>p.Id==ID); 
+          _dbcontext.Contacts.Update(contact);
+          _dbcontext.SaveChanges();
+          return View(contact);
+        }
+        catch(Exception e)
+        {
+          return BadRequest(e.Message);
+        }       
     }
 
     [HttpGet]
     public IActionResult DeleteContact(Guid Id)
     {
-        return View();
+        try
+        {
+          var contact=_dbcontext.Contacts.FirstOrDefault(p=>p.Id==Id); 
+          _dbcontext.Contacts.Remove(contact);
+          _dbcontext.SaveChanges();
+          return View();
+        }
+        catch(Exception e)
+        {
+          return BadRequest(e.Message);
+        }      
     }
 }
