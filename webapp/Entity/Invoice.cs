@@ -42,16 +42,17 @@ public class Invoice : ValidationAttribute
     public virtual AppUser Creator { get; set; }
     public override bool IsValid(object value)
     {
-        DateTime dateTime;
-        var isValid = DateTime.TryParseExact(
-
+        DateTimeOffset dateTime;
+        var isValid = DateTimeOffset.TryParseExact
+        (
         Convert.ToString(value),
         "dd mmm yyyy",
         CultureInfo.CurrentCulture,
         DateTimeStyles.None,
-        out dateTime);
+        out dateTime
+        );
 
-        return (isValid && dateTime > DateTime.Now);
+        return (isValid && dateTime > DateTimeOffset.UtcNow);
     }
 
 }
