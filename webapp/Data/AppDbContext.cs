@@ -5,6 +5,8 @@ using webapp.Entity;
 namespace webapp.Data;
 public class AppDbContext : IdentityDbContext
 {
+    public DbSet<Organization> Organizations { get; set; }
+    public DbSet<Contact> Contacts { get; set; }
     public AppDbContext(DbContextOptions options)
         : base(options) { }
 

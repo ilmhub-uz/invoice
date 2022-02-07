@@ -5,7 +5,7 @@ namespace webapp.Entity;
 
 public class Contact
 {
-    [Key]
+   [Key]
    public Guid Id { get; set; }   
 
    [Required]
