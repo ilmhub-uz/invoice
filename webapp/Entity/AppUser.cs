@@ -9,4 +9,5 @@ public class AppUser : IdentityUser
 
     [ForeignKey("Organization")]
     public virtual ICollection<Organization> Organizations { get; set; }
+    public virtual ICollection<Contact> Contacts { get; set; }
 }

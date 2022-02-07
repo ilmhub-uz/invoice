@@ -8,7 +8,12 @@ public class AppDbContext : IdentityDbContext<AppUser>
     public AppDbContext(DbContextOptions options)
         : base(options) { }
     public DbSet<Organization> Organizations { get; set; }
-    public DbSet<Contact> Contacts { get; set; }
+    public DbSet<Contact> Contacts { get => Contacts; set => Contacts = value; }
+    public AppDbContext(DbSet<Contact> contacts)
+    {
+        this.Contacts = contacts;
+    }
+
     protected override void OnModelCreating(ModelBuilder builder)
     {
         base.OnModelCreating(builder);
@@ -17,6 +22,6 @@ public class AppDbContext : IdentityDbContext<AppUser>
                 .HasMany(u => u.Organizations)
                 .WithOne()
                 .OnDelete(DeleteBehavior.Cascade);
-        // .HasPrincipalKey(u => u.Organizations);
+        }
     }
 }

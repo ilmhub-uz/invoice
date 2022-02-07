@@ -20,7 +20,7 @@ public class ContactController : Controller
     [HttpGet]
     public IActionResult GetContact(Guid Id)
     {
-       var contact = _dbcontext.Contacts.FirstOrDefault(p=>p.Id==Id);
+       
        
        return View();
     }
