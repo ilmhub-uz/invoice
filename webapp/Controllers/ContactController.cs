@@ -1,4 +1,5 @@
 
+using System;
 using Microsoft.AspNetCore.Mvc;
 using webapp.Data;
 
@@ -17,8 +18,10 @@ public class ContactController : Controller
     }
 
     [HttpGet]
-    public IActionResult GetContact (Guid Id)
+    public IActionResult GetContact(Guid Id)
     {
+       var contact = _dbcontext.Contacts.FirstOrDefault(p=>p.Id==Id);
+       
        return View();
     }
     [HttpGet]
@@ -35,12 +38,12 @@ public class ContactController : Controller
     [HttpPut]
     public IActionResult Contact(Guid ID)
     {
-       return View();
+        return View();
     }
 
     [HttpGet]
     public IActionResult DeleteContact(Guid Id)
     {
-       return View();
+        return View();
     }
 }

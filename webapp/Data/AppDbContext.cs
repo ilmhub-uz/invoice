@@ -7,16 +7,16 @@ public class AppDbContext : IdentityDbContext<AppUser>
 {
     public AppDbContext(DbContextOptions options)
         : base(options) { }
-    public DbSet<Organization> Organizations{ get; set;}
-    
+    public DbSet<Organization> Organizations { get; set; }
+    public DbSet<Contact> Contacts { get; set; }
     protected override void OnModelCreating(ModelBuilder builder)
     {
         base.OnModelCreating(builder);
-        
+
         builder.Entity<AppUser>()
                 .HasMany(u => u.Organizations)
                 .WithOne()
                 .OnDelete(DeleteBehavior.Cascade);
-                // .HasPrincipalKey(u => u.Organizations);
+        // .HasPrincipalKey(u => u.Organizations);
     }
 }
