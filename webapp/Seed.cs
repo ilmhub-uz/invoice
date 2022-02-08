@@ -82,7 +82,7 @@ public class Seed : BackgroundService
                         _logger.LogCritical($"{user.Email} has been failed to be created");
                     }
 
-                    if(user.Roles != null)
+                    if(user.Roles.Count < 1)
                     {
                         foreach (var role in user.Roles)
                         {
@@ -99,7 +99,7 @@ public class Seed : BackgroundService
                     }
                     if(user.Roles.Contains("admin"))
                     {
-                        ownerId = newUser.Id;
+                        ownerId = (newUser.Id);
                     }
                 }
             }

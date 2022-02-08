@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using webapp.Entity;
 
 namespace webapp.Data;
-public class AppDbContext : IdentityDbContext
+public class AppDbContext : IdentityDbContext<AppUser, IdentityRole<Guid>, Guid>
 {
     public DbSet<Organization> Organizations { get; set; }
     public DbSet<Contact> Contacts { get; set; }

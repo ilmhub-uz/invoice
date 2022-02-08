@@ -11,7 +11,7 @@ builder.Services.AddDbContext<AppDbContext>(options =>
             
 });
 
-builder.Services.AddIdentity<AppUser, IdentityRole>(options =>
+builder.Services.AddIdentity<AppUser, IdentityRole<Guid>>(options =>
 {
     options.Password.RequiredLength = 4;
     options.Password.RequireNonAlphanumeric = false;
@@ -24,7 +24,7 @@ builder.Services.AddIdentity<AppUser, IdentityRole>(options =>
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
-
+builder.Services.AddHostedService<Seed>();
 builder.Services.ConfigureApplicationCookie(options =>
 {
     options.Cookie.Name = "invoice.app.identity";
