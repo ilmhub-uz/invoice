@@ -1,3 +1,7 @@
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using webapp.Entity;
+
 namespace webapp.ViewModels;
 
 public class ContactViewModel
