@@ -100,6 +100,7 @@ public class ContactController: Controller
             return View(e.Message);
         }
     } 
+    [HttpGet]
     public async Task<IActionResult>DeleteContact(Guid id)
     {
         var item = await _dbcontext.Contacts.FirstOrDefaultAsync(y=>y.Id==id);
