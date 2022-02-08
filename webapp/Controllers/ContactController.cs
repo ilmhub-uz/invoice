@@ -22,7 +22,7 @@ public class ContactController: Controller
     {
     try
     {
-        var contacts= await _dbcontext.Contacts.ToListAsync();
+        var contacts = await _dbcontext.Contacts.ToListAsync();
         return View(contacts);
     }
     catch(Exception e)
