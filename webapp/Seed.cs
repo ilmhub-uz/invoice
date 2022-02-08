@@ -32,6 +32,8 @@ public class Seed : BackgroundService
         var conf = scope.ServiceProvider.GetRequiredService<IConfiguration>();
         var migrateDb = conf.GetValue<bool>("MigrateDatabase");
         var roles = _initialData.Roles;
+        var SeedOrganization = _initialData.SeedOrganization;
+        Guid ownerId = default(Guid);
 
         var seedData = conf.GetValue<bool>("SeedData");
         
@@ -80,23 +82,38 @@ public class Seed : BackgroundService
                         _logger.LogCritical($"{user.Email} has been failed to be created");
                     }
 
-
-
-                    foreach (var role in user.Roles)
+                    if(user.Roles != null)
                     {
-                        var roleResponse = await _userM.AddToRoleAsync(newUser, role);
-                        if(roleResponse.Succeeded)
+                        foreach (var role in user.Roles)
                         {
-                            _logger.LogInformation($"{user.Email} has been successfully added to role {role}");
+                            var roleResponse = await _userM.AddToRoleAsync(newUser, role);
+                            if(roleResponse.Succeeded)
+                            {
+                                _logger.LogInformation($"{user.Email} has been successfully added to role {role}");
+                            }
+                            else
+                            {
+                                _logger.LogCritical($"{user.Email} has been failed to be added to role {role}");
+                            }
                         }
-                        else
-                        {
-                            _logger.LogCritical($"{user.Email} has been failed to be added to role {role}");
-                        }
+                    }
+                    if(user.Roles.Contains("admin"))
+                    {
+                        ownerId = newUser.Id;
                     }
                 }
             }
-            
+            var organization = new Organization()
+            {
+                Id = SeedOrganization.Id,
+                Name = SeedOrganization.Name,
+                Address = SeedOrganization.Address,
+                Email = SeedOrganization.Email,
+                Phone = SeedOrganization.Phone,
+                OwnerId = ownerId
+            };
+            await ctx.Organizations.AddAsync(organization);
+            await ctx.SaveChangesAsync();
         }
     }
 }
@@ -106,7 +123,23 @@ public class InitialData
     public bool SeedDatabase { get; set; }
     public IEnumerable<string> Roles { get; set; }
     public List<SeedUser> Users { get; set; }
+
+    public SeedOrganization SeedOrganization { get; set; }
 }
+
+public class SeedOrganization
+{
+    public Guid Id { get; set; }
+    
+    public string Name { get; set; }
+    
+    public string Email { get; set; }
+    
+    public string Phone { get; set; }
+    
+    public string Address { get; set; }
+}
+
 public class SeedUser
 {
     public string Fullname { get; set; }
