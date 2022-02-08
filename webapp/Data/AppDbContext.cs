@@ -1,9 +1,10 @@
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using webapp.Entity;
 
 namespace webapp.Data;
-public class AppDbContext : IdentityDbContext
+public class AppDbContext : IdentityDbContext<AppUser, IdentityRole<Guid>, Guid>
 {
     public DbSet<Organization> Organizations { get; set; }
     public DbSet<Contact> Contacts { get; set; }
@@ -14,7 +15,9 @@ public class AppDbContext : IdentityDbContext
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
-         builder.Entity<AppUser>(au =>
+        base.OnModelCreating(builder);
+
+        builder.Entity<AppUser>(au =>
         {
             au.HasMany(u => u.Organizations)
                 .WithOne(i => i.Owner)

@@ -11,7 +11,7 @@ builder.Services.AddDbContext<AppDbContext>(options =>
             
 });
 
-builder.Services.AddIdentity<AppUser, IdentityRole>(options =>
+builder.Services.AddIdentity<AppUser, IdentityRole<Guid>>(options =>
 {
     options.Password.RequiredLength = 4;
     options.Password.RequireNonAlphanumeric = false;
