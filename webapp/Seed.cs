@@ -82,7 +82,7 @@ public class Seed : BackgroundService
                         _logger.LogCritical($"{user.Email} has been failed to be created");
                     }
 
-                    if(user.Roles.Count < 1)
+                    if(user.Roles.Count() < 1)
                     {
                         foreach (var role in user.Roles)
                         {
@@ -97,23 +97,35 @@ public class Seed : BackgroundService
                             }
                         }
                     }
-                    if(user.Roles.Contains("admin"))
-                    {
-                        ownerId = (newUser.Id);
-                    }
-                }
-            }
-            var organization = new Organization()
+                    
+                    ownerId = (newUser.Id);
+                    
+            await ctx.Organizations.AddAsync(new Organization()
             {
-                Id = SeedOrganization.Id,
+                Id = Guid.NewGuid(),
                 Name = SeedOrganization.Name,
                 Address = SeedOrganization.Address,
                 Email = SeedOrganization.Email,
                 Phone = SeedOrganization.Phone,
-                OwnerId = ownerId
-            };
-            await ctx.Organizations.AddAsync(organization);
+                OwnerId = ownerId,
+                Owner = newUser
+                
+            });
             await ctx.SaveChangesAsync();
+
+            await ctx.Contacts.AddAsync(new Contact()
+            {
+                Id = Guid.NewGuid(),
+                Name = SeedOrganization.Name,
+                Address = SeedOrganization.Address,
+                Email = SeedOrganization.Email,
+                Phone = SeedOrganization.Phone,
+            });
+
+            await ctx.SaveChangesAsync();
+                }
+            }
+            // var organization = 
         }
     }
 }
@@ -129,7 +141,6 @@ public class InitialData
 
 public class SeedOrganization
 {
-    public Guid Id { get; set; }
     
     public string Name { get; set; }
     

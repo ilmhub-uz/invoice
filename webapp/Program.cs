@@ -23,7 +23,7 @@ builder.Services.AddIdentity<AppUser, IdentityRole<Guid>>(options =>
 .AddEntityFrameworkStores<AppDbContext>();
 
 // Add services to the container.
-builder.Services.AddSingleton<Seed>();
+builder.Services.AddHostedService<Seed>();
 builder.Services.AddControllersWithViews();
 builder.Services.ConfigureApplicationCookie(options =>
 {
