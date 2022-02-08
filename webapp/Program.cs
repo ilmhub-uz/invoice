@@ -30,7 +30,7 @@ builder.Services.ConfigureApplicationCookie(options =>
     options.Cookie.Name = "invoice.app.identity";
     options.LoginPath = "/account/login";
     options.LogoutPath = "/account/logout";
-    options.Cookie.Expiration = TimeSpan.FromDays(15);
+    // options.Cookie.Expiration = TimeSpan.FromDays(15);
 });
 
 builder.Services.AddControllersWithViews();
@@ -59,3 +59,4 @@ app.MapControllerRoute(
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
 app.Run();
+
