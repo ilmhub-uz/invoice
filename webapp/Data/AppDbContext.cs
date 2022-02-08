@@ -8,6 +8,8 @@ public class AppDbContext : IdentityDbContext
     public AppDbContext(DbContextOptions options)
         : base(options) { }
 
+    public object Invoice { get; internal set; }
+
     protected override void OnModelCreating(ModelBuilder builder)
     {
         base.OnModelCreating(builder);
