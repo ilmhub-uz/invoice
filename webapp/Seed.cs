@@ -7,7 +7,7 @@ public class Seed : BackgroundService
 {
 
     private UserManager<AppUser> _userM;
-    private RoleManager<IdentityRole> _roleM;
+    private RoleManager<IdentityRole<Guid>> _roleM;
     private readonly IServiceProvider _provider;
     private readonly ILogger<Seed> _logger;
     private readonly InitialData _initialData;
@@ -19,19 +19,19 @@ public class Seed : BackgroundService
     {
         _provider = provider;
         _logger = logger;
-        _initialData = conf.GetSection("IntitialData").Get<InitialData>();
+        _initialData = conf.GetSection("InitialData").Get<InitialData>();
     }
 
     protected async override Task ExecuteAsync(CancellationToken stoppingToken)
     {
         using var scope = _provider.CreateScope();
         _userM = scope.ServiceProvider.GetRequiredService<UserManager<AppUser>>();
-        _roleM = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+        _roleM = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole<Guid>>>();
         
         var ctx = scope.ServiceProvider.GetRequiredService<AppDbContext>();
         var conf = scope.ServiceProvider.GetRequiredService<IConfiguration>();
         var migrateDb = conf.GetValue<bool>("MigrateDatabase");
-        var roles = _initialData.Roles;
+        var roles = _initialData.Roles.ToList();
         var SeedOrganization = _initialData.SeedOrganization;
         Guid ownerId = default(Guid);
 
@@ -55,7 +55,7 @@ public class Seed : BackgroundService
             {
                 if(!await _roleM.RoleExistsAsync(role))
                 {
-                    await _roleM.CreateAsync(new IdentityRole(role));
+                    await _roleM.CreateAsync(new IdentityRole<Guid>(role));
                 }
             }
 
