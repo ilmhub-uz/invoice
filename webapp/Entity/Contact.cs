@@ -1,12 +1,13 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using webapp.ViewModel;
 
 namespace webapp.Entity;
 
 public class Contact
 {
    [Key]
-   public Guid Id { get; set; }   
+   public Guid Id { get; set; } =Guid.NewGuid();  
 
    [Required]
    [Column(TypeName = "nvarchar(50)")] 
@@ -28,4 +29,19 @@ public class Contact
    public virtual AppUser Owner { get; set; }  
    public Guid OrganizationId { get; set; }
    public virtual Organization Organization { get; set; }
+
+   public ContactViewModel Tomodel(Contact contact)
+   {
+        var model=new ContactViewModel(){
+          Address=contact.Address,
+          Email=contact.Email,
+          Name=contact.Name,
+          Owner=contact.Owner,
+          Phone=contact.Phone,
+          Organization=contact.Organization,
+          OwnerId=contact.OwnerId,
+          OrganizationId=contact.OrganizationId
+         };
+         return model;
+   }
 }

@@ -18,7 +18,14 @@ public class ContactController: Controller
     }
 
     [HttpGet]
-    public async Task<IActionResult> GetContacts()
+    [Route("contacts")]
+    public IActionResult Index()
+    {
+       return View();
+    }
+    [HttpGet]
+    [Route("contacts/list")]
+    public async Task<IActionResult>List()
     {
     try
     {
@@ -33,10 +40,32 @@ public class ContactController: Controller
     {
         return BadRequest(e.Message);
     }
-
     }
     [HttpGet]
-    public async Task<IActionResult> GetContact(Guid id)
+    [Route("contacts/new")]
+    public IActionResult New()
+    {
+        ContactViewModel model=new ContactViewModel();
+        return View(model);
+    }
+
+    [HttpGet]
+    [Route("contacts/{id}/show")]
+    public async Task<IActionResult> Show(Guid id)
+    {
+       try
+        {
+            var contact= await _dbcontext.Contacts.FirstOrDefaultAsync(p=>p.Id==id);
+            return View(contact);
+        }
+        catch(Exception e)
+        {
+            return BadRequest(e.Message);
+        }
+    }
+    [HttpGet]
+    [Route("contacts/{id}/edit")]
+    public async Task<IActionResult> Edit(Guid id)
     {
        try
         {
@@ -50,7 +79,8 @@ public class ContactController: Controller
     }
     
     [HttpPost]
-    public async Task<IActionResult>Contact(ContactViewModel model)
+    [Route("contacts/create")]
+    public async Task<IActionResult>Create(ContactViewModel model)
     {
         if(!ModelState.IsValid)
         {
@@ -58,29 +88,24 @@ public class ContactController: Controller
         }
         try
         {
-            var obj=new Contact()
-            {
-              Id=model.Id,
-              Name=model.Name,
-              Address=model.Address,
-              Email=model.Email,
-              Phone=model.Phone,
-              Owner=model.Owner,
-              OwnerId=model.OwnerId
-            };
+            var obj=model.ToEntity(model);
+
             await _dbcontext.Contacts.AddAsync(obj);
-            return View();
+            await _dbcontext.SaveChangesAsync();
+            
+            var result = obj.Tomodel(obj);
+            return RedirectToAction("show",result.Id);
         }
         catch(Exception e)
         {
             return View(e.Message);
         }
     }
-    
-    [HttpPost]
-    public async Task<IActionResult>EditContact(Guid id,ContactViewModel model)
-    {
 
+    [HttpPost]
+    [Route("/contacts/{id}/update")]
+    public async Task<IActionResult> Update(Guid id,ContactViewModel model)
+    {
         try
         {
           var contact= await _dbcontext.Contacts.FirstOrDefaultAsync(o=>o.Id==id);
@@ -88,24 +113,26 @@ public class ContactController: Controller
             {
                 return NotFound();
             }
-          contact.Id=model.Id;
           contact.Address=model.Address;
           contact.Email=model.Email;
           contact.Name=model.Name;
           contact.Owner=model.Owner;
           contact.Phone=model.Phone;
-          contact.OwnerId=model.OwnerId;
-         _dbcontext.Update(contact);
+
+         _dbcontext.Contacts.Update(contact);
          await _dbcontext.SaveChangesAsync();
-         return View();
+
+         var result=contact.Tomodel(contact);
+         return RedirectToAction("show",result.Id);
         }
         catch(Exception e)
         {
             return View(e.Message);
         }
     } 
-    [HttpGet]
-    public async Task<IActionResult>DeleteContact(Guid id)
+    [HttpPost]
+    [Route("/contacts/{id}/delete")]
+    public async Task<IActionResult>Delete(Guid id)
     {
         var item = await _dbcontext.Contacts.FirstOrDefaultAsync(y=>y.Id==id);
         if(item==null)
@@ -114,6 +141,6 @@ public class ContactController: Controller
         }
         _dbcontext.Remove(item);
        await  _dbcontext.SaveChangesAsync();
-       return View();
+       return RedirectToAction("list");
     }
 }
