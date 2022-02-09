@@ -24,12 +24,9 @@ public class ContactViewModel
    [Required]
    [Column(TypeName = "nvarchar(128)")] 
    public string Email { get; set; } 
-   public virtual AppUser Owner { get; set; } 
-   public Guid OwnerId { get; set; }   
+   public virtual AppUser Owner { get; set; }    
 
    public virtual Organization Organization { get; set; } 
-
-    public Guid OrganizationId { get; set; }
 
    public  Contact ToEntity(ContactViewModel model)
    {
@@ -39,9 +36,7 @@ public class ContactViewModel
           Name=model.Name,
           Owner=model.Owner,
           Phone=model.Phone,
-          Organization=model.Organization,
-          OwnerId=model.OwnerId,
-          OrganizationId=model.OrganizationId
+          Organization=model.Organization
          };
          return contact;
    }

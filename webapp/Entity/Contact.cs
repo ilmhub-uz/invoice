@@ -7,7 +7,7 @@ namespace webapp.Entity;
 public class Contact
 {
    [Key]
-   public Guid Id { get; set; } =Guid.NewGuid();  
+   public Guid Id { get; set; } = Guid.NewGuid();  
 
    [Required]
    [Column(TypeName = "nvarchar(50)")] 
@@ -38,9 +38,7 @@ public class Contact
           Name=contact.Name,
           Owner=contact.Owner,
           Phone=contact.Phone,
-          Organization=contact.Organization,
-          OwnerId=contact.OwnerId,
-          OrganizationId=contact.OrganizationId
+          Organization=contact.Organization
          };
          return model;
    }
