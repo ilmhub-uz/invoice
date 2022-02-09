@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using webapp.Data;
 using webapp.Entity;
-using webapp.ViewModels;
+using webapp.ViewModel;
 
 namespace webapp.Controllers;
 
@@ -11,7 +11,7 @@ public class ContactController: Controller
     private readonly ILogger _logger;
     private readonly AppDbContext _dbcontext;
 
-    public ContactController(ILogger logger, AppDbContext dbcontext)
+    public ContactController(ILogger<ContactController> logger, AppDbContext dbcontext)
     {
         _logger=logger;
         _dbcontext=dbcontext;
@@ -23,6 +23,10 @@ public class ContactController: Controller
     try
     {
         var contacts = await _dbcontext.Contacts.ToListAsync();
+        if(contacts==null)
+        {
+            return NotFound();
+        }
         return View(contacts);
     }
     catch(Exception e)

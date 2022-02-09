@@ -1,9 +1,10 @@
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using webapp.Entity;
 
 namespace webapp.Data;
-public class AppDbContext : IdentityDbContext
+public class AppDbContext : IdentityDbContext<AppUser, IdentityRole<Guid>,Guid>
 {
     public DbSet<Organization> Organizations { get; set; }
     public DbSet<Contact> Contacts { get; set; }
@@ -22,12 +23,5 @@ public class AppDbContext : IdentityDbContext
                 .OnDelete(DeleteBehavior.Cascade);
         });
 
-        builder.Entity<AppUser>(au => 
-        {
-            au.HasMany(u => u.Contacts)
-                .WithOne(i => i.Owner)
-                .HasForeignKey(i => i.OwnerId)
-                .OnDelete(DeleteBehavior.Cascade);
-        });
     }
 }

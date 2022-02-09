@@ -2,12 +2,12 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using webapp.Entity;
 
-namespace webapp.ViewModels;
+namespace webapp.ViewModel;
 
 public class ContactViewModel
 {
    [Key]
-   public Guid Id { get; set; }   
+   public Guid Id { get; set; }  = Guid.NewGuid(); 
 
     [Required(ErrorMessage = "ism-sharfini kiritish shart!")]
     [Display(Name = "Ism")]
