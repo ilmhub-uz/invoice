@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace webapp.Entity;
 
-public class Organization
+public class Contact
 {
    [Key]
    public Guid Id { get; set; }   
@@ -25,7 +25,7 @@ public class Organization
    public string Email { get; set; } 
 
    public Guid OwnerId { get; set; }   
-   public virtual AppUser Owner { get; set; }
-   public virtual ICollection<Invoice> Invoices { get; set; }
-   public virtual ICollection<Contact> Contacts { get; set; }   
+   public virtual AppUser Owner { get; set; }  
+   public Guid OrganizationId { get; set; }
+   public virtual Organization Organization { get; set; }
 }
