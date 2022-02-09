@@ -4,8 +4,6 @@ using webapp.Entity;
 using Microsoft.AspNetCore.Identity;
 
 var builder = WebApplication.CreateBuilder(args);
-builder.Services.AddControllersWithViews();
- 
 
 builder.Services.AddDbContext<AppDbContext>(options =>
 {

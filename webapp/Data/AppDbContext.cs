@@ -7,7 +7,7 @@ namespace webapp.Data;
 public class AppDbContext : IdentityDbContext<AppUser, IdentityRole<Guid>, Guid>
 {
     public DbSet<Organization> Organizations { get; set; }
-    public DbSet<Contact> Contacts { get; set; }  
+    public DbSet<Contact> Contacts { get; set; }
     public DbSet<Invoice> Invoices { get; set; }
     public DbSet<InvoiceItem> IvoiceItems { get; set; }
     public AppDbContext(DbContextOptions options)
