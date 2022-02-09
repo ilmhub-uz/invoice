@@ -1,6 +1,9 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using webapp.Data;
+using webapp.Entity;
+using webapp.ViewModel;
 
 namespace webapp;
 
@@ -15,29 +18,33 @@ public class InvoiceController : Controller
         _logger = logger;
         _ctx = context;
     }
-    
+
     [HttpGet]
-    public IActionResult Create() => View();
+    public IActionResult Index() => 
+  
+    
+    // [HttpGet]
+    // public IActionResult Create() => View();
 
-    [HttpPost]
-    public async Task<IActionResult> Create(NewInvoiceViewModel model)
-    {
-        if(!ModelState.IsValid)
-        {
-            return View();
-        }
+    // [HttpPost]
+    // public async Task<IActionResult> Create(NewInvoiceViewModel model)
+    // {
+    //     if(!ModelState.IsValid)
+    //     {
+    //         return View();
+    //     }
 
-        var inv = new Invoice()
-        {
+    //     var inv = new Invoice()
+    //     {
             
-        };
+    //     };
 
-        await _ctx.Invoice.AddAsync(inv);
+    //     await _ctx.Invoice.AddAsync(inv);
 
-        await _ctx.SaveChangesAsync();
+    //     await _ctx.SaveChangesAsync();
 
-        return RedirectToAction(nameof(Created));
-    }
+    //     return RedirectToAction(nameof(Created));
+    // }
 
     
 }
