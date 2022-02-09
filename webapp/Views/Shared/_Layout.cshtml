@@ -15,28 +15,41 @@
     <header>
         <div class="wrapper">
 
-            @* <aside class="main-sidebar sidebar-dark-primary elevation-4 position-fixed">
+            <aside class="main-sidebar sidebar-dark-primary elevation-4 position-fixed">
                 <a href="/" class="brand-link">
                     <img src="dist/images.jpg" class="brand-image img-circle elevation-3" style="opacity: .8">
                     <span class="brand-text font-weight-light">Invoice</span>
-                </a>
-                <div class="sidebar">
-                    <nav class="mt-2">
-                        <ul class="nav nav-pills nav-sidebar flex-column" role="menu" data-accordion="false">
+                </a>      
 
-                            <li class="nav-item menu-open">
-                                <a href="/" class="nav-link active">
-                                    <i class="nav-icon fas fa-tachometer-alt"></i>
-                                </a>
-                                <ul class="nav nav-treeview">
-                                   
-                                </ul>
-                            </li>
+                <div class="nav flex-column nav-pills mt-3" id="v-pills-tab" role="tablist" aria-orientation="vertical">
 
-                        </ul>
-                    </nav>
+                    <a class="nav-link active mx-2" id="v-pills-home-tab" data-toggle="pill" href="#" role="tab"
+                        aria-controls="v-pills-home" aria-selected="true">
+                                    <i class="fas fa-file-invoice fa-lg mx-2"></i>
+                        <h6 class="list-inline-item mx-1" style="size: 30px;">Invoicelar</h6>
+                    </a>
+
+                    <a class="nav-link mx-2" id="v-pills-profile-tab" data-toggle="pill" href="#" role="tab"
+                        aria-controls="v-pills-profile" aria-selected="false"> 
+                                    <i class="fas fa-warehouse mx-2"></i>
+                        <h6 class="list-inline-item mx-1" style="size: 30px;">Korxonalar</h6>
+                    </a>
+
+                    <a class="nav-link mx-2" id="v-pills-messages-tab" data-toggle="pill" href="#" role="tab"
+                    
+                        aria-controls="v-pills-messages" aria-selected="false">
+                                    <i class="fas fa-id-card-alt mx-2"></i>
+                        <h6 class="list-inline-item mx-1" style="size: 30px;">Kantaktlar</h6>
+                    </a>
+
+                    <a class="nav-link mx-2" id="v-pills-settings-tab" data-toggle="pill" href="#" role="tab"
+                        aria-controls="v-pills-settings" aria-selected="false">
+                                    <i class="fas fa-chart-pie mx-2"></i>
+                        <h6 class="list-inline-item mx-1" style="size: 30px;">Statistika</h6>
+                    </a>
                 </div>
-            </aside> *@
+
+            </aside>
         </div>
     </header>
 
