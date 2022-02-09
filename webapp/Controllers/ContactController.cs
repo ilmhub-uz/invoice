@@ -126,6 +126,7 @@ public class ContactController: Controller
           contact.Name=model.Name;
           contact.Owner=model.Owner;
           contact.Phone=model.Phone;
+          contact.Organization=model.Organization;
 
          _dbcontext.Contacts.Update(contact);
          await _dbcontext.SaveChangesAsync();
