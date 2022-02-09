@@ -34,7 +34,13 @@ public class ContactController: Controller
         {
             return NotFound();
         }
-        return View(contacts);
+        var contactlist=new List<ContactViewModel>();
+
+        foreach(var model in contacts){
+            var parsed = model.Tomodel(model);
+            contactlist.Add(parsed);
+        }
+        return View(contactlist);
     }
     catch(Exception e)
     {
@@ -56,7 +62,8 @@ public class ContactController: Controller
        try
         {
             var contact= await _dbcontext.Contacts.FirstOrDefaultAsync(p=>p.Id==id);
-            return View(contact);
+            var res = contact.Tomodel(contact);
+            return View(res);
         }
         catch(Exception e)
         {
@@ -70,7 +77,8 @@ public class ContactController: Controller
        try
         {
             var contact= await _dbcontext.Contacts.FirstOrDefaultAsync(p=>p.Id==id);
-            return View(contact);
+            var res = contact.Tomodel(contact);
+            return View(res);
         }
         catch(Exception e)
         {
