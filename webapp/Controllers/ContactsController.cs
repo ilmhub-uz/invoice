@@ -26,38 +26,32 @@ public class ContactsController : Controller
     [HttpGet]
     public async Task<IActionResult> List(int page = 1, int limit = 10)
     {
-        try
+        var contacts = await _dbcontext.Contacts
+        .Skip((page - 1) * limit)
+        .Take(limit)
+        .Select(u => new ContactViewModel
         {
-            var contacts = await _dbcontext.Contacts
-            .Skip((page - 1) * limit)
-            .Take(limit)
-            .Select(u => new ContactViewModel
-            {
-                Id = u.Id,
-                Name = u.Name,
-                Phone = u.Phone,
-                Email = u.Email,
-                Owner = u.Owner,
-                Organization = u.Organization
-            }).ToListAsync();
-
-
-            var totalContacts = contacts.Count();
-
-            return View(new ContactListViewModel()
-            {
-                Contacts = contacts,
-                TotalContacts = totalContacts,
-                Pages = (int)Math.Ceiling(totalContacts / (double)limit),
-                Page = page,
-                Limit = limit
-            });
-
-        }
-        catch (Exception e)
+            Id = u.Id,
+            Name = u.Name,
+            Phone = u.Phone,
+            Email = u.Email,
+            Owner = u.Owner,
+        }).ToListAsync();
+        if (contacts == null)
         {
-            return BadRequest(e.Message);
+            return NotFound();
         }
+
+        var totalContacts = contacts.Count();
+
+        return View(new ContactListViewModel()
+        {
+            Contacts = contacts,
+            TotalContacts = totalContacts,
+            Pages = (int)Math.Ceiling(totalContacts / (double)limit),
+            Page = page,
+            Limit = limit
+        });
     }
 
     [HttpGet]
@@ -74,21 +68,13 @@ public class ContactsController : Controller
             return NotFound();
         }
 
-        try
+        var contact = await _dbcontext.Contacts.FirstOrDefaultAsync(p => p.Id == id);
+        if (contact == default)
         {
-            var contact = await _dbcontext.Contacts.FirstOrDefaultAsync(p => p.Id == id);
-            if(contact==default)
-            {
-               return NotFound();
-            }
+            return NotFound();
+        }
 
-            var result = contact.ToContactViewModel();
-            return View(result);
-        }
-        catch (Exception e)
-        {
-            return BadRequest(e.Message);
-        }
+        return View(contact.ToContactViewModel());
     }
 
     [HttpGet("{id}/edit")]
@@ -99,21 +85,13 @@ public class ContactsController : Controller
             return NotFound();
         }
 
-        try
+        var contact = await _dbcontext.Contacts.FirstOrDefaultAsync(p => p.Id == id);
+        if (contact == default)
         {
-            var contact = await _dbcontext.Contacts.FirstOrDefaultAsync(p => p.Id == id);
-            if(contact==default)
-            {
-                return NotFound();
-            }
+            return NotFound();
+        }
+        return View(contact.ToEditContactViewModel());
 
-            var result = contact.ToEditContactViewModel();
-            return View(result);
-        }
-        catch (Exception e)
-        {
-            return BadRequest(e.Message);
-        }
     }
 
     [HttpPost]
@@ -124,55 +102,45 @@ public class ContactsController : Controller
             return View(model);
         }
 
-        try
-        {
-            var result = model.ToContactEntity();
-            await _dbcontext.Contacts.AddAsync(result);
+        var result = model.ToContactEntity();
+        await _dbcontext.Contacts.AddAsync(result);
 
-            return RedirectToAction("show", result.Id);
-        }
-
-        catch (Exception e)
-        {
-            return BadRequest(e.Message);
-        }
+        return RedirectToAction("show", result.Id);
     }
 
     [HttpPost("{id}/update")]
     public async Task<IActionResult> Update(Guid id, EditContactViewModel model)
     {
-        try
+        var contact = await _dbcontext.Contacts.FirstOrDefaultAsync(o => o.Id == id);
+        if (contact == default)
         {
-            var contact = await _dbcontext.Contacts.FirstOrDefaultAsync(o => o.Id == id);
-            if (contact == default)
-            {
-                return NotFound();
-            }
-
-            contact.Address = model.Address;
-            contact.Email = model.Email;
-            contact.Name = model.Name;
-            contact.Owner = model.Owner;
-            contact.Phone = model.Phone;
-            contact.Organization = model.Organization;
-
-            _dbcontext.Contacts.Update(contact);
-            await _dbcontext.SaveChangesAsync();
-
-            var result = contact.ToEditContactViewModel();
-
-            return RedirectToAction("show", result.Id);
+            return NotFound();
         }
 
-        catch (Exception e)
-        {
-            return BadRequest(e.Message);
-        }
+        contact.Address = model.Address;
+        contact.Email = model.Email;
+        contact.Name = model.Name;
+        contact.Owner = model.Owner;
+        contact.Phone = model.Phone;
+
+        _dbcontext.Contacts.Update(contact);
+        await _dbcontext.SaveChangesAsync();
+
+        var result = contact.ToEditContactViewModel();
+
+        return RedirectToAction("show", result.Id);
+
     }
     [HttpPost("{id}/delete")]
     public async Task<IActionResult> Delete(Guid id)
     {
+        if (!await _dbcontext.Contacts.AnyAsync(p => p.Id == id))
+        {
+            return NotFound();
+        }
+
         var item = await _dbcontext.Contacts.FirstOrDefaultAsync(y => y.Id == id);
+
         if (item == default)
         {
             return NotFound();

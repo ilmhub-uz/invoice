@@ -11,7 +11,6 @@ public static class ToViewModels
           Name=entity.Name,
           Address=entity.Address,
           Email=entity.Email,
-          Organization=entity.Organization,
           Owner=entity.Owner,
           Phone=entity.Phone
         };
@@ -24,7 +23,6 @@ public static class ToViewModels
           Name=entity.Name,
           Address=entity.Address,
           Email=entity.Email,
-          Organization=entity.Organization,
           Owner=entity.Owner,
           Phone=entity.Phone
         };
@@ -37,7 +35,6 @@ public static class ToViewModels
           Name=entity.Name,
           Address=entity.Address,
           Email=entity.Email,
-          Organization=entity.Organization,
           Owner=entity.Owner,
           Phone=entity.Phone
         };

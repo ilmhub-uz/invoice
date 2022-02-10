@@ -26,6 +26,4 @@ public class ContactViewModel
    public string Email { get; set; } 
    public virtual AppUser Owner { get; set; }    
 
-   public virtual Organization Organization { get; set; } 
-
 }

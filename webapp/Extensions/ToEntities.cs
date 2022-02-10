@@ -11,7 +11,6 @@ public static class ToEntities
         Name=model.Name,
         Address=model.Address,
         Email=model.Email,
-        Organization=model.Organization,
         Phone=model.Phone,
         Owner=model.Owner
        };

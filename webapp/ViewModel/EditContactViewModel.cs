@@ -32,7 +32,5 @@ namespace webapp.ViewModel
         [Required(ErrorMessage ="Raxbarni Ismi Sharifini kiriting !")]
         [Display(Name = "Korxona Raxbari")]
         public virtual AppUser Owner { get; set; }
-        
-        public virtual Organization Organization { get; set; }
     }
 }
