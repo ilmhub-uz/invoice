@@ -26,6 +26,6 @@ public class Organization
 
    public Guid OwnerId { get; set; }   
    public virtual AppUser Owner { get; set; }
+   
    public virtual ICollection<Invoice> Invoices { get; set; }
-   public virtual ICollection<Contact> Contacts { get; set; }   
 }
