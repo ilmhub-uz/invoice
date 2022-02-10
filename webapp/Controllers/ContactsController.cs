@@ -24,7 +24,7 @@ public class ContactsController : Controller
     }
 
     [HttpGet]
-    public async Task<IActionResult> List(string query, int page = 1, int limit = 10)
+    public async Task<IActionResult> List(int page = 1, int limit = 10)
     {
         try
         {
@@ -63,16 +63,26 @@ public class ContactsController : Controller
     [HttpGet]
     public IActionResult New()
     {
-      return View(new NewContactViewModel());
+        return View(new NewContactViewModel());
     }
 
     [HttpGet("{id}/show")]
     public async Task<IActionResult> Show(Guid id)
     {
+        if (!await _dbcontext.Contacts.AnyAsync(c => c.Id == id))
+        {
+            return NotFound();
+        }
+
         try
         {
             var contact = await _dbcontext.Contacts.FirstOrDefaultAsync(p => p.Id == id);
-            var result = ToViewModels.ToContactViewModel(contact);
+            if(contact==default)
+            {
+               return NotFound();
+            }
+
+            var result = contact.ToContactViewModel();
             return View(result);
         }
         catch (Exception e)
@@ -84,10 +94,20 @@ public class ContactsController : Controller
     [HttpGet("{id}/edit")]
     public async Task<IActionResult> Edit(Guid id)
     {
+        if (!await _dbcontext.Contacts.AnyAsync(c => c.Id == id))
+        {
+            return NotFound();
+        }
+
         try
         {
             var contact = await _dbcontext.Contacts.FirstOrDefaultAsync(p => p.Id == id);
-            var result = ToViewModels.ToEditContactViewModel(contact);
+            if(contact==default)
+            {
+                return NotFound();
+            }
+
+            var result = contact.ToEditContactViewModel();
             return View(result);
         }
         catch (Exception e)
@@ -103,16 +123,18 @@ public class ContactsController : Controller
         {
             return View(model);
         }
+
         try
         {
-            var result = ToEntities.ToContactEntity(model);
+            var result = model.ToContactEntity();
             await _dbcontext.Contacts.AddAsync(result);
 
-            return RedirectToAction("show",result.Id);
+            return RedirectToAction("show", result.Id);
         }
+
         catch (Exception e)
         {
-            return View(e.Message);
+            return BadRequest(e.Message);
         }
     }
 
@@ -126,6 +148,7 @@ public class ContactsController : Controller
             {
                 return NotFound();
             }
+
             contact.Address = model.Address;
             contact.Email = model.Email;
             contact.Name = model.Name;
@@ -135,14 +158,15 @@ public class ContactsController : Controller
 
             _dbcontext.Contacts.Update(contact);
             await _dbcontext.SaveChangesAsync();
-            
-            var result = ToViewModels.ToEditContactViewModel(contact);
 
-            return RedirectToAction("show",result.Id);
+            var result = contact.ToEditContactViewModel();
+
+            return RedirectToAction("show", result.Id);
         }
+
         catch (Exception e)
         {
-            return View(e.Message);
+            return BadRequest(e.Message);
         }
     }
     [HttpPost("{id}/delete")]
@@ -153,6 +177,7 @@ public class ContactsController : Controller
         {
             return NotFound();
         }
+
         _dbcontext.Remove(item);
         await _dbcontext.SaveChangesAsync();
         return RedirectToAction("list");

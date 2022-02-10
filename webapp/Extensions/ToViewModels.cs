@@ -4,7 +4,7 @@ using webapp.ViewModel;
 namespace webapp.Extensions;
 public static class ToViewModels
 {
-    public static ContactViewModel ToContactViewModel(Contact entity)
+    public static ContactViewModel ToContactViewModel(this Contact entity)
     {
         return new ContactViewModel(){
           Id = entity.Id,
@@ -17,7 +17,7 @@ public static class ToViewModels
         };
     }
 
-    public static EditContactViewModel ToEditContactViewModel(Contact entity)
+    public static EditContactViewModel ToEditContactViewModel(this Contact entity)
     {
         return new EditContactViewModel(){
           Id = entity.Id,
@@ -30,7 +30,7 @@ public static class ToViewModels
         };
     }
 
-    public static NewContactViewModel ToNewContactViewModel(Contact entity)
+    public static NewContactViewModel ToNewContactViewModel(this Contact entity)
     {
         return new NewContactViewModel(){
           Id = entity.Id,

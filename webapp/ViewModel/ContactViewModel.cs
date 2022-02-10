@@ -8,12 +8,12 @@ public class ContactViewModel
 {
    public Guid Id { get; set; } 
 
-   [Required(ErrorMessage = "ism-sharfini kiritish shart!")]
-   [Display(Name = "Ism")]
+   [Required(ErrorMessage = "Korxona Nomi Kiritish shart!")]
+   [Display(Name = "Korxona Nomi")]
    public string Name { get; set; }  
 
    [Required(ErrorMessage = "Manzilni kiriting")]
-   [Display(Name = "Ism")]  
+   [Display(Name = "Manzil")]  
    public string Address { get; set; }  
 
    [Required,Phone]

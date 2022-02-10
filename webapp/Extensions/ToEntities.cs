@@ -4,7 +4,7 @@ using webapp.ViewModel;
 namespace webapp.Extensions;
 public static class ToEntities
 {
-   public static Contact ToContactEntity(NewContactViewModel model)
+   public static Contact ToContactEntity( this NewContactViewModel model)
    {
        return new Contact(){
         Id=model.Id,
