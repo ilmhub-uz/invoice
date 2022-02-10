@@ -6,7 +6,6 @@ namespace webapp.ViewModel;
 
 public class ContactViewModel
 {
-   [Key]
    public Guid Id { get; set; } 
 
    [Required(ErrorMessage = "ism-sharfini kiritish shart!")]
@@ -17,27 +16,16 @@ public class ContactViewModel
    [Display(Name = "Ism")]  
    public string Address { get; set; }  
 
-   [Required]
-   [Column(TypeName = "nvarchar(15)")] 
+   [Required,Phone]
+   [RegularExpression(
+        @"^[\+]?(998[-\s\.]?)([0-9]{2}[-\s\.]?)([0-9]{3}[-\s\.]?)([0-9]{2}[-\s\.]?)([0-9]{2}[-\s\.]?)$", 
+        ErrorMessage = "Telefon raqam formati noto'g'ri.")]
    public string Phone { get; set; }   
 
-   [Required]
-   [Column(TypeName = "nvarchar(128)")] 
+   [Required,EmailAddress]
    public string Email { get; set; } 
    public virtual AppUser Owner { get; set; }    
 
    public virtual Organization Organization { get; set; } 
 
-   public  Contact ToEntity(ContactViewModel model)
-   {
-        var contact=new Contact(){
-          Address=model.Address,
-          Email=model.Email,
-          Name=model.Name,
-          Owner=model.Owner,
-          Phone=model.Phone,
-          Organization=model.Organization
-         };
-         return contact;
-   }
 }

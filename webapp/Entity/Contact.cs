@@ -7,8 +7,7 @@ namespace webapp.Entity;
 public class Contact
 {
    [Key]
-   public Guid Id { get; set; } = Guid.NewGuid();  
-
+   public Guid Id { get; set; } 
    [Required]
    [Column(TypeName = "nvarchar(50)")] 
    public string Name { get; set; }  
@@ -30,16 +29,4 @@ public class Contact
    public Guid OrganizationId { get; set; }
    public virtual Organization Organization { get; set; }
 
-   public ContactViewModel Tomodel(Contact contact)
-   {
-        var model=new ContactViewModel(){
-          Address=contact.Address,
-          Email=contact.Email,
-          Name=contact.Name,
-          Owner=contact.Owner,
-          Phone=contact.Phone,
-          Organization=contact.Organization
-         };
-         return model;
-   }
 }
