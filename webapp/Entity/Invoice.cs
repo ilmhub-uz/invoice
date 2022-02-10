@@ -31,11 +31,15 @@ public class Invoice
 
     [Required]
     public DateTimeOffset DeliveryDueAt { get; set; }
-    public Guid OrganizationId { get; set; }
-    public virtual Organization Organization { get; set; }
+    
+    public Guid FromId { get; set; }
+    public virtual Organization From { get; set; }
+    
     public Guid BillToId { get; set; }
     public virtual Contact BillTo { get; set; }
+    
+    public Guid OwnerId { get; set; }
+    public virtual AppUser Owner { get; set; }
+    
     public virtual ICollection<InvoiceItem> Items { get; set; }
-    public Guid? CreatorId { get; set; }
-    public virtual AppUser Creator { get; set; }
 }

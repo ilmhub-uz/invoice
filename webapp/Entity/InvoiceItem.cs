@@ -8,7 +8,8 @@ namespace webapp.Entity;
     public Guid Id { get; set; }
     
     [Required]
-    [Column(TypeName = "nvarchar(255)")] 
+    [Column(TypeName = "nvarchar(255)")]
+    
     public string Name { get; set; }
 
     [Required]
@@ -19,7 +20,9 @@ namespace webapp.Entity;
   
     [Required]
     public string Currency { get; set; }
+
     public Guid InvoiceId { get; set; }
+
     public virtual Invoice Invoice { get; set; }
 
 }

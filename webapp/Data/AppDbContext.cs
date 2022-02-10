@@ -22,34 +22,28 @@ public class AppDbContext : IdentityDbContext<AppUser, IdentityRole<Guid>, Guid>
             au.HasMany(u => u.Organizations)
                 .WithOne(i => i.Owner)
                 .HasForeignKey(i => i.OwnerId)
+                .IsRequired()
+                .OnDelete(DeleteBehavior.Cascade);
+
+            au.HasMany(u => u.Invoices)
+                .WithOne(i => i.Owner)
+                .HasForeignKey(i => i.OwnerId)
+                .IsRequired()
+                .OnDelete(DeleteBehavior.Cascade);
+
+            au.HasMany(u => u.Contacts)
+                .WithOne(i => i.Owner)
+                .HasForeignKey(i => i.OwnerId)
+                .IsRequired()
                 .OnDelete(DeleteBehavior.Cascade);
         });
 
-        builder.Entity<AppUser>(au =>
-        {
-            au.HasMany(u => u.Invoices)
-                .WithOne(i => i.Creator)
-                .HasForeignKey(i => i.CreatorId)
-                .OnDelete(DeleteBehavior.SetNull);
-        });
-
         builder.Entity<Organization>(o =>
        {
-
-         o.HasMany(org => org.Contacts)
-             .WithOne(p => p.Organization)
-             .HasForeignKey(p => p.OrganizationId)
-             .IsRequired()
-             .OnDelete(DeleteBehavior.Cascade);
-       });
-
-        builder.Entity<Organization>(o =>
-       {
-           o.HasMany(org => org.Invoices)
-               .WithOne(i => i.Organization)
-               .HasForeignKey(i => i.OrganizationId)
-               .IsRequired()
-               .OnDelete(DeleteBehavior.Cascade);
+         o.HasMany(org => org.Invoices)
+             .WithOne(p => p.From)
+             .HasForeignKey(p => p.FromId)
+             .OnDelete(DeleteBehavior.NoAction);
        });
 
         builder.Entity<Invoice>(i =>
@@ -59,8 +53,16 @@ public class AppDbContext : IdentityDbContext<AppUser, IdentityRole<Guid>, Guid>
                 .HasForeignKey(item => item.InvoiceId)
                 .IsRequired()
                 .OnDelete(DeleteBehavior.Cascade);
+            
+            i.HasOne(inv => inv.BillTo)
+                .WithMany()
+                .OnDelete(DeleteBehavior.NoAction);
 
-            i.HasIndex(inv => new { inv.OrganizationId, inv.Number })
+            i.HasOne(inv => inv.From)
+                .WithMany()
+                .OnDelete(DeleteBehavior.NoAction);
+            
+            i.HasIndex(inv => new { inv.FromId, inv.Number })
                 .IsUnique();
         });
     }
