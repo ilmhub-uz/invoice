@@ -240,9 +240,6 @@ namespace webapp.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<Guid>("OrganizationId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<Guid>("OwnerId")
                         .HasColumnType("uniqueidentifier");
 
@@ -251,8 +248,6 @@ namespace webapp.Migrations
                         .HasColumnType("nvarchar(15)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("OrganizationId");
 
                     b.HasIndex("OwnerId");
 
@@ -271,11 +266,11 @@ namespace webapp.Migrations
                     b.Property<DateTimeOffset>("CreatedAt")
                         .HasColumnType("datetimeoffset");
 
-                    b.Property<Guid?>("CreatorId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<DateTimeOffset>("DeliveryDueAt")
                         .HasColumnType("datetimeoffset");
+
+                    b.Property<Guid>("FromId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTimeOffset>("ModifiedAt")
                         .HasColumnType("datetimeoffset");
@@ -284,7 +279,10 @@ namespace webapp.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(30)");
 
-                    b.Property<Guid>("OrganizationId")
+                    b.Property<Guid?>("OrganizationId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("OwnerId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTimeOffset>("PaymentDueAt")
@@ -302,9 +300,11 @@ namespace webapp.Migrations
 
                     b.HasIndex("BillToId");
 
-                    b.HasIndex("CreatorId");
+                    b.HasIndex("OrganizationId");
 
-                    b.HasIndex("OrganizationId", "Number")
+                    b.HasIndex("OwnerId");
+
+                    b.HasIndex("FromId", "Number")
                         .IsUnique();
 
                     b.ToTable("Invoices");
@@ -425,19 +425,11 @@ namespace webapp.Migrations
 
             modelBuilder.Entity("webapp.Entity.Contact", b =>
                 {
-                    b.HasOne("webapp.Entity.Organization", "Organization")
-                        .WithMany("Contacts")
-                        .HasForeignKey("OrganizationId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("webapp.Entity.AppUser", "Owner")
-                        .WithMany()
+                        .WithMany("Contacts")
                         .HasForeignKey("OwnerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Organization");
 
                     b.Navigation("Owner");
                 });
@@ -447,25 +439,30 @@ namespace webapp.Migrations
                     b.HasOne("webapp.Entity.Contact", "BillTo")
                         .WithMany()
                         .HasForeignKey("BillToId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
-                    b.HasOne("webapp.Entity.AppUser", "Creator")
-                        .WithMany("Invoices")
-                        .HasForeignKey("CreatorId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                    b.HasOne("webapp.Entity.Organization", "From")
+                        .WithMany()
+                        .HasForeignKey("FromId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
 
-                    b.HasOne("webapp.Entity.Organization", "Organization")
+                    b.HasOne("webapp.Entity.Organization", null)
                         .WithMany("Invoices")
-                        .HasForeignKey("OrganizationId")
+                        .HasForeignKey("OrganizationId");
+
+                    b.HasOne("webapp.Entity.AppUser", "Owner")
+                        .WithMany("Invoices")
+                        .HasForeignKey("OwnerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("BillTo");
 
-                    b.Navigation("Creator");
+                    b.Navigation("From");
 
-                    b.Navigation("Organization");
+                    b.Navigation("Owner");
                 });
 
             modelBuilder.Entity("webapp.Entity.InvoiceItem", b =>
@@ -492,6 +489,8 @@ namespace webapp.Migrations
 
             modelBuilder.Entity("webapp.Entity.AppUser", b =>
                 {
+                    b.Navigation("Contacts");
+
                     b.Navigation("Invoices");
 
                     b.Navigation("Organizations");
@@ -504,8 +503,6 @@ namespace webapp.Migrations
 
             modelBuilder.Entity("webapp.Entity.Organization", b =>
                 {
-                    b.Navigation("Contacts");
-
                     b.Navigation("Invoices");
                 });
 #pragma warning restore 612, 618
