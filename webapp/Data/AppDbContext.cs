@@ -30,7 +30,7 @@ public class AppDbContext : IdentityDbContext<AppUser, IdentityRole<Guid>, Guid>
             au.HasMany(u => u.Invoices)
                 .WithOne(i => i.Creator)
                 .HasForeignKey(i => i.CreatorId)
-                .OnDelete(DeleteBehavior.Cascade);
+                .OnDelete(DeleteBehavior.SetNull);
         });
 
         builder.Entity<Organization>(o =>
