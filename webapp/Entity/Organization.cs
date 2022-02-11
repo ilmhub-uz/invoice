@@ -28,4 +28,5 @@ public class Organization
    public virtual AppUser Owner { get; set; }
    
    public virtual ICollection<Invoice> Invoices { get; set; }
+
 }

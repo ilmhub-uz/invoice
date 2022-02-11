@@ -27,4 +27,6 @@ public class Contact
    public Guid OwnerId { get; set; }
    
    public virtual AppUser Owner { get; set; }  
+
+   
 }

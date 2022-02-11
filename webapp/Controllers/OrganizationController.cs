@@ -1,9 +1,12 @@
+using System.Text.Json;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using webapp.Data;
 using webapp.Entity;
+using webapp.Extensions;
+using webapp.ViewModels;
 
 namespace webapp.Controllers
 {
@@ -38,24 +41,7 @@ public class OrganizationController : Controller
         return View(model);
     }
 
-    [HttpGet]
-    public async Task<IActionResult> Joined()
-    {
-        var user = await _userm.GetUserAsync(User);
-        if(user == null)
-        {
-            return Unauthorized();
-        }
-        
-        var model = user.EmployeeOrganizations
-            .Select(org => org.Organization)
-            .Where(org => org.OwnerId != user.Id)
-            .ToList().ToModel();
-        
-        return View(model);
-    }
     
-
     [HttpGet]
     public IActionResult Create() => View();
 
@@ -83,16 +69,7 @@ public class OrganizationController : Controller
 
         try
         {
-            await _ctx.Organizations.AddAsync(org);
-
-            var empOrg = new EmployeeOrganization()
-            {
-                EmployeeId = user.Id,
-                OrganizationId = org.Id
-            };
-            
-            await _ctx.EmployeeOrganizations.AddAsync(empOrg);
-
+            await _ctx.Organizations.AddAsync(org);           
             await _ctx.SaveChangesAsync();
             _logger.LogInformation($"New organization added with ID: {org.Id}");
             _logger.LogInformation($"New EmployeeOrganization added with ID: {user.Id}");
@@ -108,53 +85,6 @@ public class OrganizationController : Controller
 
         
     }
-
-
-    [HttpGet]
-    public IActionResult AddMember(Guid id) => View(new AddMemberViewModel() { OrganizationId = id });
-
-    [HttpPost]
-    public async Task<IActionResult> AddMember(AddMemberViewModel model)
-    {
-        if(!ModelState.IsValid)
-        {
-            return View();
-        }
-
-        if(await _ctx.JoinCodes.AnyAsync(c => c.ForEmail == model.ForEmail))
-        {
-            ModelState.AddModelError("ForEmail", "Bu emailga taklif jo'natilgan.");
-            return View();
-        }
-
-        if(!await _ctx.Users.AnyAsync(u => u.Email == model.ForEmail))
-        {
-            ModelState.AddModelError("ForEmail", "Bu email allaqachon olingan.");
-            return View();
-        }
-        else
-        {
-            // send invitation email
-        }
-
-        var user = await _userm.GetUserAsync(User);
-
-
-        var joinCode = new JoinCode()
-        {
-            ForEmail = model.ForEmail,
-            OrganizationId = model.OrganizationId,
-            CreatorId = user.Id
-        };
-
-        await _ctx.JoinCodes.AddAsync(joinCode);
-        await _ctx.SaveChangesAsync();
-
-        
-        return RedirectToAction(nameof(Created));
-    }
-
-
 
 
     [HttpGet]
