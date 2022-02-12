@@ -1,0 +1,71 @@
+@model ContactListViewModel
+
+
+@foreach (var contact in Model.Contacts)
+{
+     <th scope="row">@((Model.Page - 1) * Model.Limit + Model.Contacts.ToList().IndexOf(contact)+1)</th>
+    <div class="card card-solid">
+    <div class="card-body pb-0">
+        <div class="row">
+
+            <div class="col-12 col-sm-6 col-md-4 d-flex align-items-stretch flex-column">
+                <div class="card bg-light d-flex flex-fill">
+                    <div class="card-header text-muted border-bottom-0">
+                        Digital Strategist
+                    </div>
+                    <div class="card-body pt-0">
+                        <div class="row">
+                            <div class="col-7">
+                                <h2 class="lead"><b>@contact.Name</b></h2>
+                                <p class="text-muted text-sm"><b>About: </b> @contact.Email </p>
+                                <ul class="ml-4 mb-0 fa-ul text-muted">
+                                    <li class="small"><span class="fa-li"><i class="fas fa-lg fa-building"></i></span>
+                                        Address: @contact.Address</li>
+                                    <li class="small"><span class="fa-li"><i class="fas fa-lg fa-phone"></i></span>
+                                        Phone #: @contact.Phone</li>
+                                     <li class="small"><span class="fa-li"><i class=""></i></span>
+                                        Phone #: @contact.Owner</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <div class="text-right">
+                            <a href="#" class="btn btn-sm btn-primary">
+                                <i class="fas fa-user"></i> View Profile
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+}
+
+@{
+    var prevClass = Model.Page > 1 ? string.Empty : "disabled";
+    var nextClass = Model.Page >= Model.Pages ? "disabled" : string.Empty;
+}
+
+<div class="d-flex">
+    <nav aria-label="Page navigation example" class="mx-auto">
+    <ul class="pagination">
+        <li class="page-item @prevClass">
+        <a class="page-link" href="/user/users?page=@(Math.Max(1, Model.Page - 1))&limit=@Model.Limit" aria-label="Previous">
+            <span aria-hidden="true">&laquo;</span>
+        </a>
+        </li>
+        @for(int i = 1; i <= Model.Pages; i++)
+        {
+            var pageActive = i == Model.Page ? "active" : string.Empty;
+            <li class="page-item @pageActive"><a class="page-link" href="/user/users?page=@i&limit=@Model.Limit">@i</a></li>
+        }
+        <li class="page-item @nextClass">
+        <a class="page-link" href="/user/users?page=@(Math.Min(Model.Pages, Model.Page + 1))&limit=@Model.Limit" aria-label="Next">
+            <span aria-hidden="true">&raquo;</span>
+        </a>
+        </li>
+    </ul>
+    </nav>
+</div>
