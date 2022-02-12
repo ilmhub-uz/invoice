@@ -1,0 +1,50 @@
+@model EditContactViewModel
+
+@{
+    Layout = "_AuthLayout";
+}
+
+
+<div class="contanier my-5 edit">
+  <h2 class="mb-4">Contact qushish</h2>
+<form class="form-signin" method="post" asp-action="Update" asp-controller="Contacts" id="form">
+<div class="text-center mb-4">
+        <h1 class="h3 mb-3 font-weight-normal">Invoice</h1>
+    </div>
+
+    <div class="form-label-group">
+        <input asp-for="Name" type="text" id="inputName" class="form-control" placeholder="Name" required="" autofocus="true">
+        <label class="text-muted" asp-for="Name" for="inputName"></label>
+        <span asp-validation-for="Name" class="text-danger show"></span>
+    </div>
+
+    <div class="form-label-group">
+        <input asp-for="Address" type="text" id="inputName" class="form-control" placeholder="Name" required="true">
+        <label class="text-muted" asp-for="Address" for="inputBirthdate"></label>
+        <span asp-validation-for="Address" class="text-danger"></span>
+    </div>
+
+    <div class="form-label-group">
+        <input asp-for="Email" type="email" id="inputEmail" class="form-control" placeholder="Email address" required="">
+        <label class="text-muted" asp-for="Email" for="inputEmail"></label>
+        <span asp-validation-for="Email" class="text-danger"></span>
+    </div>
+
+    <div class="form-label-group">
+        <input asp-for="Phone" type="tel" id="inputPhone" class="form-control" placeholder="Phone" required="">
+        <label class="text-muted" asp-for="Phone" for="inputPhone"></label>
+        <span asp-validation-for="Phone" class="text-danger"></span>
+    </div>
+
+    <div class="form-label-group">
+        <input asp-for="Owner" type="name" id="inputName" class="form-control" placeholder="Name" required="">
+        <label class="text-muted" asp-for="Name" for="inputName"></label>
+        <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+    
+    <div class="row mx-auto">
+        <button class="btn btn-lg btn-success" type="submit">Edit</button>
+    </div>
+    <p class="mt-5 mb-3 text-muted text-center">Invoice © @DateTimeOffset.Now.Year</p>
+</form>
+</div>

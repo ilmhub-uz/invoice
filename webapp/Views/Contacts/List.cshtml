@@ -1,6 +1,11 @@
 @model ContactListViewModel
 
 
+@{
+    Layout = "_AuthLayout";
+}
+
+
 @foreach (var contact in Model.Contacts)
 {
      <th scope="row">@((Model.Page - 1) * Model.Limit + Model.Contacts.ToList().IndexOf(contact)+1)</th>
