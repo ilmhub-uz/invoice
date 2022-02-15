@@ -18,11 +18,10 @@ namespace webapp.Entity;
     [Required]
     public double Rate { get; set; }
   
-   [Required]
+    [Required]
     public string Currency { get; set; }
 
     public Guid InvoiceId { get; set; }
 
     public virtual Invoice Invoice { get; set; }
-
 }
