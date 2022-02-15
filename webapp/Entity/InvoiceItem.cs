@@ -24,5 +24,4 @@ namespace webapp.Entity;
     public Guid InvoiceId { get; set; }
 
     public virtual Invoice Invoice { get; set; }
-
 }

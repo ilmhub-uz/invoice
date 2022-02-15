@@ -6,19 +6,23 @@ using Microsoft.EntityFrameworkCore;
 using webapp.Data;
 using webapp.Entity;
 using webapp.Extensions;
+using webapp.ViewModel;
 using webapp.ViewModels;
 
-namespace webapp.Controllers
-{
+namespace webapp.Controllers;
+
    
 [Authorize]
-public class OrganizationController : Controller
+public class OrganizationsController : Controller
 {
     private readonly ILogger _logger;
     private readonly AppDbContext _ctx;
     private readonly UserManager<AppUser> _userm;
 
-    public OrganizationController(AppDbContext context, UserManager<AppUser> usermanager,ILogger<OrganizationController> logger)
+    public OrganizationsController(
+                    AppDbContext context,
+                    UserManager<AppUser> usermanager,
+                    ILogger<OrganizationsController> logger)
     {
         
         _ctx = context;
@@ -27,7 +31,14 @@ public class OrganizationController : Controller
     }
 
     [HttpGet]
-    public async Task<IActionResult> Created()
+    public IActionResult Index()
+    {
+        return View();
+    }
+
+    [HttpGet]
+        
+    public async Task<IActionResult> List(int page = 1, int limit = 10)
     {
         var user = await _userm.GetUserAsync(User);
         if(user == null)
@@ -35,15 +46,36 @@ public class OrganizationController : Controller
             return Unauthorized();
         }
 
-        var orgs = await _ctx.Organizations.Where(o => o.OwnerId == user.Id).ToListAsync();
-        
-        var model = orgs.ToModel();
-        return View(model);
+        var createdOrgs = await _ctx.Organizations
+        .Skip((page - 1) * limit)
+        .Take(limit)
+        .Select(u => new OrganizationViewModel
+        {
+            Id = u.Id,
+            Name = u.Name,
+            Phone = u.Phone,
+            Email = u.Email,
+            Address = u.Address,
+        }).ToListAsync();
+        if (createdOrgs == null)
+        {
+            return NotFound();
+        }
+
+        var totalOrganizations = createdOrgs.Count();
+
+        return View(new OrganizationsListViewModel()
+        {
+            Organizations = createdOrgs,
+            totalOrganizationsCount = totalOrganizations,
+            totalPages = (int)Math.Ceiling(totalOrganizations / (double)limit),
+            Page = page,
+            Limit = limit
+        });
     }
 
     
-    [HttpGet]
-    public IActionResult Create() => View();
+    
 
     [HttpPost]
     public async Task<IActionResult> Create(CreateOrganizationViewModel model)
@@ -81,19 +113,16 @@ public class OrganizationController : Controller
         {
             _logger.LogWarning($"Error occured while creating organization:\n{e.Message}");
             return StatusCode(500, new { errorMessage = e.Message });
-        }
-
-        
+        }        
     }
 
-
     [HttpGet]
-    public IActionResult Update(Guid id)
+    public async Task<IActionResult> Update(Guid id)
     {
-        var returnedModel = _ctx.Organizations.FirstOrDefault(o => o.Id == id);
-        if(returnedModel != default)
+        var existingOrg = await _ctx.Organizations.FirstOrDefaultAsync(o => o.Id == id);
+        if(existingOrg != default)
         {
-            return View(returnedModel.ToOrgModel());
+            return View(existingOrg.ToOrgModel());
         }
         else
         {
@@ -101,8 +130,8 @@ public class OrganizationController : Controller
         }
     }
 
-    [HttpPost]
-    public async Task<IActionResult> UpdateModel(Guid id, OrganizationModel model)
+    [HttpPost("{id}/update")]
+    public async Task<IActionResult> UpdateModel(Guid id, UpdateOrganizationViewModel model)
     {
         if(!ModelState.IsValid)
         {
@@ -110,21 +139,23 @@ public class OrganizationController : Controller
             return RedirectToAction("Created");
         }
        
-        var returnedModel = _ctx.Organizations.FirstOrDefault(o => o.Id == id);
-        if(returnedModel == null)
+        var existingOrg = await _ctx.Organizations.FirstOrDefaultAsync(o => o.Id == id);
+        if(existingOrg == null)
         {
             return NotFound();
         }        
         
         try
         {
-            returnedModel.Address = model.Address;
-            returnedModel.Phone = model.Phone;
-            returnedModel.Email = model.Email; 
-            returnedModel.Name = model.Name; 
+            existingOrg.Address = model.Address;
+            existingOrg.Phone = model.Phone;
+            existingOrg.Email = model.Email; 
+            existingOrg.Name = model.Name; 
                     
             await _ctx.SaveChangesAsync();  
-            _logger.LogInformation($"Organization updated with ID: {returnedModel.Id}");  
+            
+            _logger.LogInformation($"Organization updated with ID: {existingOrg.Id}");  
+            
             return RedirectToAction(nameof(Created));
             
         }
@@ -135,79 +166,50 @@ public class OrganizationController : Controller
         }
     }
 
-
-    [HttpGet]
-    public IActionResult Delete(Guid id)
+    [HttpPost("{id}/delete")]
+    public async Task <IActionResult> Delete(Guid id)
     {
-        var returnedModel = _ctx.Organizations.FirstOrDefault(o => o.Id == id);
-        if(returnedModel != default)
-        {
-            return View(returnedModel.ToOrgModel());
-        }
-        else
-        {
-            return RedirectToAction(nameof(Created));
-        }
-    }
-
-    [HttpPost]
-    public IActionResult DeleteModel(Organization entity)
-    {
-        if(!ModelState.IsValid)
-        {
-            _logger.LogInformation($"Model validation failed for {JsonSerializer.Serialize(entity)}");
-            return RedirectToAction("Created");
-        }
-
-        var org = _ctx.Organizations.FirstOrDefault(o => o.Id == entity.Id);
-        
-        try
-        {
-            _ctx.Organizations.Remove(org);
-            
-            _ctx.SaveChangesAsync();
-            _logger.LogInformation($"Organization deleted with ID: {org.Id}");
-    
-            return RedirectToAction(nameof(Created));
-            
-        }
-        catch (Exception e)
-        {
-            _logger.LogWarning($"Error occured while updating organization:\n{e.Message}");
-            return StatusCode(500, new { errorMessage = e.Message });
-        }
-    }
-
-
-
-
-    [HttpGet]
-    public IActionResult GetById(OrganizationViewModel org)
-    {
-        return View();
-    }
-
-
-    [HttpPost]
-    public IActionResult GetOrganizationById(OrganizationViewModel org)
-    {
-        if(!ModelState.IsValid)
+        if (!await _ctx.Organizations.AnyAsync(p => p.Id == id))
         {
             return NotFound();
         }
 
-        
-        var returnedModel = _ctx.Organizations.FirstOrDefault(o => o.Id == org.Id);
-        if(returnedModel != default)
+        var org = await _ctx.Organizations.FirstOrDefaultAsync(y => y.Id == id);
+
+        try
         {
-            return View("Get", returnedModel.ToOrganizationModel());
+           _ctx.Organizations.Remove(org);
+
+            await _ctx.SaveChangesAsync();
+
+            _logger.LogInformation($"Organization deleted with ID: {org.Id}");
+
+            return RedirectToAction("list");            
         }
-        else
+        catch (Exception e)
         {
-            return RedirectToAction(nameof(Created));
+            _logger.LogWarning($"Error occured while updating organization:\n{e.Message}");
+            return StatusCode(500, new { errorMessage = e.Message });
         }
-    
     }
-    
-}
+
+    [HttpGet]
+    public IActionResult New() => View(new CreateOrganizationViewModel());
+   
+    [HttpGet("{id}/show")]
+    public async Task <IActionResult> Show(Guid id)
+    {
+        if (!await _ctx.Organizations.AnyAsync(c => c.Id == id))
+        {
+            return NotFound();
+        }
+
+        var org = await _ctx.Organizations.FirstOrDefaultAsync(p => p.Id == id);
+        if (org == default)
+        {
+            return NotFound();
+        }
+
+        return View(org.ToOrgModel());
+    }    
 }

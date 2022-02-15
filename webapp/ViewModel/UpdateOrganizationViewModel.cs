@@ -3,18 +3,10 @@ using System.ComponentModel.DataAnnotations;
 
 namespace webapp.ViewModels
 {
-    public class OrganizationModel
+    public class UpdateOrganizationViewModel
     {
         public Guid Id { get; set; }
-        // public string Name { get; set; }
-    
-        // public string Phone { get; set; }
-    
-        // public string Email { get; set; }
-
-        // public string Address { get; set; }
-
-
+        
         [Required(ErrorMessage = "To'liq nomni kiritish shart!")]
         [Display(Name = "Korxona nomi")]
         public string Name { get; set; }
