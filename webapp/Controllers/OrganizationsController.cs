@@ -39,13 +39,7 @@ public class OrganizationsController : Controller
     [HttpGet]
         
     public async Task<IActionResult> List(int page = 1, int limit = 10)
-    {
-        var user = await _userm.GetUserAsync(User);
-        if(user == null)
-        {
-            return Unauthorized();
-        }
-
+    {        
         var existingOrgs = await _ctx.Organizations
         .Skip((page - 1) * limit)
         .Take(limit)
@@ -69,6 +63,9 @@ public class OrganizationsController : Controller
             Limit = (uint)limit
         });
     }   
+
+    [HttpGet]
+    public IActionResult New() => View(new CreateOrganizationViewModel());
 
     [HttpPost]
     public async Task<IActionResult> Create(CreateOrganizationViewModel model)
@@ -104,7 +101,7 @@ public class OrganizationsController : Controller
         }
         catch (Exception e)
         {
-            _logger.LogWarning($"Error occured while creating organization:\n{e.Message}");
+            _logger.LogError($"Error occured while creating organization:\n{e.Message}");
             return StatusCode(500, new { errorMessage = e.Message });
         }        
     }
@@ -154,7 +151,7 @@ public class OrganizationsController : Controller
         }
         catch (Exception e)
         {
-            _logger.LogWarning($"Error occured while updating organization:\n{e.Message}");
+            _logger.LogError($"Error occured while updating organization:\n{e.Message}");
             return StatusCode(500, new { errorMessage = e.Message });
         }
     }
@@ -181,14 +178,11 @@ public class OrganizationsController : Controller
         }
         catch (Exception e)
         {
-            _logger.LogWarning($"Error occured while updating organization:\n{e.Message}");
+            _logger.LogError($"Error occured while updating organization:\n{e.Message}");
             return StatusCode(500, new { errorMessage = e.Message });
         }
     }
-
-    [HttpGet]
-    public IActionResult New() => View(new CreateOrganizationViewModel());
-   
+  
     [HttpGet("{id}/show")]
     public async Task <IActionResult> Show(Guid id)
     {
@@ -198,11 +192,7 @@ public class OrganizationsController : Controller
         }
 
         var org = await _ctx.Organizations.FirstOrDefaultAsync(p => p.Id == id);
-        if (org == default)
-        {
-            return NotFound();
-        }
-
+        
         return View(org.ToOrganizationViewModel());
     }    
 }
