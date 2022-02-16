@@ -21,9 +21,13 @@ public class AccountController : Controller
         _signinManager = signinManager;
         _logger = logger;
     }
+
     [HttpGet]
     public IActionResult Register(string returnUrl) 
-        => View(new RegisterViewModel() { ReturnUrl = returnUrl ?? string.Empty });
+        => View(new RegisterViewModel()
+                { 
+                    ReturnUrl = returnUrl ?? string.Empty 
+                });
 
     [HttpPost]
     public async Task<IActionResult> Register(RegisterViewModel model)
