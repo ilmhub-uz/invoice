@@ -1,104 +1,78 @@
+using System.Text.Json;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using webapp.Entity;
-using webapp.ViewModel;
+using webapp.ViewModels;
 
 namespace webapp.Controllers;
 
 public class AccountController : Controller
 {
-   private readonly ILogger<AccountController> _logger;
-    private readonly UserManager<AppUser> _userManager;
-    private readonly SignInManager<AppUser> _signinManager;
+  
+  
+    private readonly UserManager<AppUser> _userM;
+    private readonly SignInManager<AppUser> _signInM;
+    private readonly ILogger<AccountController> _logger;
 
     public AccountController(
-        ILogger<AccountController> logger,
         UserManager<AppUser> userManager,
-        SignInManager<AppUser> signinManager)
+        SignInManager<AppUser> signInManager,
+        ILogger<AccountController> logger)
     {
-        _userManager = userManager;
-        _signinManager = signinManager;
+        _userM = userManager;
+        _signInM = signInManager;
         _logger = logger;
     }
 
-    [HttpGet]
-    public IActionResult Register(string returnUrl) 
-        => View(new RegisterViewModel()
-                { 
-                    ReturnUrl = returnUrl ?? string.Empty 
-                });
+    [HttpGet("Register")]
+    public IActionResult Register(string returnUrl)
+    {
+        return View(new RegisterViewModel() { ReturnUrl = returnUrl ?? string.Empty });
+    }
 
-    [HttpPost]
+    [HttpPost("Register")]
     public async Task<IActionResult> Register(RegisterViewModel model)
     {
-        if(!ModelState.IsValid)
-        {
-            return View(model);
-        }
-
-        if(await _userManager.Users.AnyAsync(u => u.Email == model.Email))
-        {
-            ModelState.AddModelError("Email", "Email oldin kiritilgan.");
-            return View(model);
-        }
-
-        if(await _userManager.Users.AnyAsync(u => u.PhoneNumber == model.Phone))
-        {
-            ModelState.AddModelError("Telefon", "Telefon raqam oldin kiritilgan.");
-            return View(model);
-        }
-
         var user = new AppUser()
         {
             Fullname = model.Fullname,
             Email = model.Email,
             PhoneNumber = model.Phone,
-            UserName = model.Email.Substring(0, model.Email.IndexOf('@'))
         };
 
-        await _userManager.CreateAsync(user, model.Password);
+        var result = await _userM.CreateAsync(user, model.Password);
 
-        return LocalRedirect($"/account/login?returnUrl={model.ReturnUrl}");
+        if (result.Succeeded)
+        {
+            return LocalRedirect($"/Login?returnUrl={model.ReturnUrl}");
+        }
+
+        return BadRequest(JsonSerializer.Serialize(result.Errors));
     }
 
-    [HttpGet]
-    public IActionResult Login(string returnUrl) 
-        => View(new LoginViewModel() { ReturnUrl = returnUrl ?? string.Empty });
+    [HttpGet("Login")]
+    public IActionResult Login(string returnUrl)
+    {
+        return View(new LoginViewModel() { ReturnUrl = returnUrl ?? string.Empty });
+    }
 
-    [HttpPost]
+    [HttpPost("Login")]
     public async Task<IActionResult> Login(LoginViewModel model)
     {
-        if(!ModelState.IsValid)
+        var user = await _userM.FindByEmailAsync(model.Email);
+        if (user != null)
         {
-            return View(model);
+            await _signInM.PasswordSignInAsync(user, model.Password, false, false); // isPersistant
+
+            return LocalRedirect($"{model.ReturnUrl ?? "/"}");
         }
 
-        var user = await _userManager.Users.FirstOrDefaultAsync(u => u.Email == model.Email);
-        if(user == default)
-        {
-            ModelState.AddModelError("Password", "Email yoki parol noto'g'ri kiritilgan.");
-            return View(model);
-        }
-
-        var result = await _signinManager.PasswordSignInAsync(user, model.Password, false, false);
-        if(result.Succeeded)
-        {
-            return LocalRedirect(model.ReturnUrl ?? "/");
-        }
-
-        return BadRequest(result.IsNotAllowed);
+        return BadRequest("Wrong credentials");
     }
-
-    [HttpPost]
+      [HttpPost]
     public async Task<IActionResult> Logout()
     {
-        if(_signinManager.IsSignedIn(User))
-        {
-            await _signinManager.SignOutAsync();
-
-        }
         return LocalRedirect("/");
     }
-
+    
 }

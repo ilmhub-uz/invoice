@@ -1,71 +1,49 @@
-@model webapp.ViewModel.RegisterViewModel;
+@model webapp.ViewModels.RegisterViewModel;
 
 @{
     Layout = "_AuthLayout";
 }
 
-<form class="d-flex justify-content-center form-signin " method="post" asp-action="Register" asp-controller="Account">
-  <input hidden asp-for="@Model.ReturnUrl">
-  <div class="login-box" style="margin-top:70px;">
-    <a href="/" class="brand-link d-flex justify-content-center">
-      <img src="/images.jpg" class="brand-image img-circle " style="opacity: .8">
-      <span class="brand-text font-weight-light">Invoice</span>
-    </a>
-    <div class="card">
-      <div class="card-body login-card-body">
-        <p class="login-box-msg">Register a new membership</p>
-      
-        <form action="../../index3.html" method="post">
-          <div class="input-group mb-3">
-            <input asp-for="@Model.Fullname" type="text" class="form-control" placeholder="Full name">
-            <div class="input-group-append">
-              <div class="input-group-text">
-                <span class="fas fa-user"></span>
-              </div>
-            </div>
-          </div>
-          <div class="input-group mb-3">
-            <input asp-for="@Model.Phone" type="phone" class="form-control" placeholder="Phone">
-            <div class="input-group-append">
-              <div class="input-group-text">
-                <span class="bi bi-telephone-fill"></span>
-              </div>
-            </div>
-          </div>
-          <div class="input-group mb-3">
-            <input asp-for="@Model.Email" type="email" class="form-control" placeholder="Email">
-            <div class="input-group-append">
-              <div class="input-group-text">
-                <span class="fas fa-envelope"></span>
-              </div>
-            </div>
-          </div>
-          <div class="input-group mb-3">
-            <input asp-for="@Model.Password" type="password" class="form-control" placeholder="Password">
-            <div class="input-group-append">
-              <div class="input-group-text">
-                <span class="fas fa-lock"></span>
-              </div>
-            </div>
-          </div>
-          <div class="input-group mb-3">
-            <input asp-for="@Model.ConfirmPassword" type="password" class="form-control" placeholder="Retype password">
-            <div class="input-group-append">
-              <div class="input-group-text">
-                <span class="fas fa-lock"></span>
-              </div>
-            </div>
-          </div>
-          <div class="d-flex justify-content-center" >
-            <div class="my-3 col-6">
-              <button type="submit" class="btn btn-primary btn-block">Register</button>
-            </div>
-          </div>
-        </form>
-        <div class="my-2 col-4" >
-          <a type="submit" style="margin-left:25px;height: 50px; width: 250px; border-radius:5px;"   href="~/account/login" class="text-center"><p class="text-center">I already have a membership</p></a>
-        </div>  
+<form class="form-signin" method="post" asp-action="Register" asp-controller="Account">
+    <input type="text" asp-for="@Model.ReturnUrl" hidden="true">
+    <p>
+        <h3>Account yaratish</h3>
+    </p>
+
+    <div class="form-label-group">
+        <input asp-for="Fullname" type="text" id="inputName" class="form-control" placeholder="Fullname" required="">
+        <label class="text-muted" asp-for="Fullname" for="inputName"></label>
+        <span asp-validation-for="Fullname" class="text-danger show"></span>
     </div>
-  </div>
-  <p class="mt-5 mb-3 text-muted text-center">© @DateTimeOffset.Now.Year</p>
+
+    <div class="form-label-group">
+        <input asp-for="Email" type="email" id="inputEmail" class="form-control" placeholder="Email address" required="">
+        <label class="text-muted" asp-for="Email" for="inputEmail"></label>
+        <span asp-validation-for="Email" class="text-danger"></span>
+    </div>
+
+    <div class="form-label-group">
+        <input asp-for="Phone" type="tel" id="inputPhone" class="form-control" placeholder="Phone" required="">
+        <label class="text-muted" asp-for="Phone" for="inputPhone"></label>
+        <span asp-validation-for="Phone" class="text-danger"></span>
+    </div>
+
+    <div class="form-label-group">
+        <input asp-for="Password" type="password" id="inputPassword" class="form-control" placeholder="Password" required="">
+        <label class="text-muted" asp-for="Password" for="inputPassword"></label>
+        <span asp-validation-for="Password" class="text-danger"></span>
+    </div>
+
+    <div class="form-label-group">
+        <input asp-for="ConfirmPassword" type="password" id="inputConfirmPassword"  class="form-control" placeholder="Password" required="">
+        <label class="text-muted" asp-for="ConfirmPassword" for="inputConfirmPassword"></label>
+        <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+    </div>
+
+    <button class="btn btn-lg btn-primary btn-block" type="submit">Royhatdan otish</button>
+    <p></p>
+    <p>Accountingiz bormi? <a class="btn btn-success" rel="stylesheet" href="/Login?returnUrl=@Model.ReturnUrl">Kirish</a>
+        
+    </p>
+    <p class="mt-5 mb-3 text-muted text-center">© @DateTimeOffset.Now.Year</p>
 </form> 

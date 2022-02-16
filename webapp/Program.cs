@@ -1,55 +1,39 @@
-using webapp.Data;
-using Microsoft.EntityFrameworkCore;
-using webapp.Entity;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using webapp.Data;
+using webapp.Entity;
 
 var builder = WebApplication.CreateBuilder(args);
 
+
+// Add services to the container.
+builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<AppDbContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
-
 });
 
-builder.Services.AddIdentity<AppUser, IdentityRole<Guid>>(options =>
+builder.Services.AddIdentity<AppUser, IdentityRole>(options =>
 {
-    options.Password.RequiredLength = 4;
-    options.Password.RequireNonAlphanumeric = false;
+    options.Password.RequiredLength = 6;
     options.Password.RequireUppercase = false;
-    options.Password.RequireLowercase = false;
-
-    options.User.RequireUniqueEmail = true;
+    options.Password.RequireNonAlphanumeric = false;
 })
+.AddRoles<IdentityRole>()
 .AddEntityFrameworkStores<AppDbContext>();
-
-builder.Services.AddControllersWithViews();
-builder.Services.ConfigureApplicationCookie(options =>
-{
-    options.Cookie.Name = "invoice.app.identity";
-    options.LoginPath = "/account/login";
-    options.LogoutPath = "/account/logout";
-    
-});
-
-builder.Services.AddControllersWithViews();
-
 
 var app = builder.Build();
 
-if (!app.Environment.IsDevelopment())
-{
-    app.UseExceptionHandler("/Home/Error");
-    app.UseHsts();
-}
-
 app.UseHttpsRedirection();
 app.UseStaticFiles();
+
 app.UseRouting();
+
 app.UseAuthentication();
 app.UseAuthorization();
+
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
 app.Run();
-
