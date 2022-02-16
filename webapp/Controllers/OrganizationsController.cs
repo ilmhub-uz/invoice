@@ -46,7 +46,7 @@ public class OrganizationsController : Controller
             return Unauthorized();
         }
 
-        var createdOrgs = await _ctx.Organizations
+        var existingOrgs = await _ctx.Organizations
         .Skip((page - 1) * limit)
         .Take(limit)
         .Select(u => new OrganizationViewModel
@@ -57,25 +57,18 @@ public class OrganizationsController : Controller
             Email = u.Email,
             Address = u.Address,
         }).ToListAsync();
-        if (createdOrgs == null)
+        
+        var totalOrganizations = existingOrgs.Count();
+        
+        return View(new PaginatedListViewModel<OrganizationViewModel>()
         {
-            return NotFound();
-        }
-
-        var totalOrganizations = createdOrgs.Count();
-
-        return View(new OrganizationsListViewModel()
-        {
-            Organizations = createdOrgs,
-            totalOrganizationsCount = totalOrganizations,
-            totalPages = (int)Math.Ceiling(totalOrganizations / (double)limit),
-            Page = page,
-            Limit = limit
+            Items = existingOrgs,
+            TotalItems = (uint)totalOrganizations,
+            TotalPages = (uint)Math.Ceiling(totalOrganizations / (double)limit),
+            CurrentPage = (uint)page,
+            Limit = (uint)limit
         });
-    }
-
-    
-    
+    }   
 
     [HttpPost]
     public async Task<IActionResult> Create(CreateOrganizationViewModel model)
@@ -122,7 +115,7 @@ public class OrganizationsController : Controller
         var existingOrg = await _ctx.Organizations.FirstOrDefaultAsync(o => o.Id == id);
         if(existingOrg != default)
         {
-            return View(existingOrg.ToOrgModel());
+            return View(existingOrg.ToOrganizationViewModel());
         }
         else
         {
@@ -153,7 +146,7 @@ public class OrganizationsController : Controller
             existingOrg.Name = model.Name; 
                     
             await _ctx.SaveChangesAsync();  
-            
+
             _logger.LogInformation($"Organization updated with ID: {existingOrg.Id}");  
             
             return RedirectToAction(nameof(Created));
@@ -210,6 +203,6 @@ public class OrganizationsController : Controller
             return NotFound();
         }
 
-        return View(org.ToOrgModel());
+        return View(org.ToOrganizationViewModel());
     }    
 }

@@ -13,7 +13,7 @@ namespace webapp.Extensions
                 Name = entity.Name                
             };
         }
-        public static OrganizationViewModel ToOrgModel(this Organization entity)
+        public static OrganizationViewModel ToOrganizationViewModel(this Organization entity)
         {
             return new OrganizationViewModel()
             {
