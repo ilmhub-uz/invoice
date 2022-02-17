@@ -10,7 +10,6 @@ using webapp.ViewModel;
 using webapp.ViewModels;
 
 namespace webapp.Controllers;
-
    
 [Authorize]
 public class OrganizationsController : Controller
@@ -23,8 +22,7 @@ public class OrganizationsController : Controller
                     AppDbContext context,
                     UserManager<AppUser> usermanager,
                     ILogger<OrganizationsController> logger)
-    {
-        
+    {        
         _ctx = context;
         _userm = usermanager;
         _logger = logger;
@@ -52,7 +50,7 @@ public class OrganizationsController : Controller
             Address = u.Address,
         }).ToListAsync();
         
-        var totalOrganizations = existingOrgs.Count();
+        var totalOrganizations = _ctx.Organizations.Count();
         
         return View(new PaginatedListViewModel<OrganizationViewModel>()
         {
@@ -74,7 +72,7 @@ public class OrganizationsController : Controller
         {
             _logger.LogInformation($"Model validation failed for {JsonSerializer.Serialize(model)}");
             // return BadRequest("Organization properties are not valid.");
-            return View();
+            return View(model);
         }
 
         var user = await _userm.GetUserAsync(User);
@@ -93,11 +91,9 @@ public class OrganizationsController : Controller
         {
             await _ctx.Organizations.AddAsync(org);           
             await _ctx.SaveChangesAsync();
-            _logger.LogInformation($"New organization added with ID: {org.Id}");
-            _logger.LogInformation($"New EmployeeOrganization added with ID: {user.Id}");
+            _logger.LogInformation($"New organization added with ID: {org.Id}");            
 
-            return RedirectToAction(nameof(Created));
-            
+            return RedirectToAction("show",org);            
         }
         catch (Exception e)
         {
@@ -108,16 +104,12 @@ public class OrganizationsController : Controller
 
     [HttpGet]
     public async Task<IActionResult> Update(Guid id)
-    {
+    {        
         var existingOrg = await _ctx.Organizations.FirstOrDefaultAsync(o => o.Id == id);
         if(existingOrg != default)
         {
             return View(existingOrg.ToOrganizationViewModel());
-        }
-        else
-        {
-            return RedirectToAction(nameof(Created));
-        }
+        }        
     }
 
     [HttpPost("{id}/update")]
@@ -126,7 +118,7 @@ public class OrganizationsController : Controller
         if(!ModelState.IsValid)
         {
             _logger.LogInformation($"Model validation failed for {JsonSerializer.Serialize(model)}");
-            return RedirectToAction("Created");
+            return View();
         }
        
         var existingOrg = await _ctx.Organizations.FirstOrDefaultAsync(o => o.Id == id);
@@ -146,7 +138,7 @@ public class OrganizationsController : Controller
 
             _logger.LogInformation($"Organization updated with ID: {existingOrg.Id}");  
             
-            return RedirectToAction(nameof(Created));
+            return RedirectToAction("show");
             
         }
         catch (Exception e)
