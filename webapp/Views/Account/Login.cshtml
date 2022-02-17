@@ -4,57 +4,29 @@
     Layout = "_AuthLayout";
 }
 
-<form class="d-flex justify-content-center form-signup" method="post" asp-action="Login" asp-controller="Account">
-       
-      <div class="login-box" style="margin-top:70px;">
-        <a href="/" class="brand-link d-flex justify-content-center">
-          <img src="/images.jpg" class="brand-image img-circle" style="opacity: .8" >
-          <span class="brand-text font-weight-light">Invoice</span>
-        </a>
-        <div class="card">
-          <div class="card-body login-card-body">
-            <p class="login-box-msg">Sign in to start your session</p>
-          
-            <form action="../../index3.html" method="post">
-              <div class="input-group mb-3">
-                <input type="email" class="form-control" placeholder="Email">
-                <div class="input-group-append">
-                  <div class="input-group-text">
-                    <span class="fas fa-envelope"></span>
-                  </div>
-                </div>
-              </div>
-              <div class="input-group mb-3">
-                <input type="password" class="form-control" placeholder="Password">
-                <div class="input-group-append">
-                  <div class="input-group-text">
-                    <span class="fas fa-lock"></span>
-                  </div>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-8">
-                  <div class="icheck-primary">
-                    <input type="checkbox" id="remember">
-                    <label for="remember">
-                      Remember Me
-                    </label>
-                  </div>
-                </div>
-                <div class="d-flex justify-content-center col-4">
-                  <button href="" type="submit" class="btn btn-primary btn-block">Sign In</button>
-                </div>
-              </div>
-              <p></p>
-              
-            </form>
-            <div class="d-flex justify-content-center col-12">
-              <a href="~/account/register" class="text-center "><p>Register a new membership</p></a>
-            </div>
-         
-        </div>
-      </div>
-   </div>
-    <p class="mt-5 mb-3 text-muted text-center">© @DateTimeOffset.Now.Year</p>
+<form class="form-signin" method="post" asp-action="Login" asp-controller="Account">
+    <input hidden asp-for="ReturnUrl">
+    <div class="text-center mb-4">
+        <img class="mb-4" src="~/icon-dark.svg" alt="" width="72"
+            height="72">
+        <h1 class="h3 mb-3 font-weight-normal">Ilmhub IT School</h1>
+    </div>
 
+
+    <div class="form-label-group">
+        <input asp-for="Email" type="email" id="inputEmail" class="form-control" placeholder="Email address" required="">
+        <label class="text-muted" asp-for="Email" for="inputEmail"></label>
+        <span asp-validation-for="Email" class="text-danger"></span>
+    </div>
+
+    <div class="form-label-group">
+        <input asp-for="Password" type="password" id="inputPassword" class="form-control" placeholder="Password" required="">
+        <label class="text-muted" asp-for="Password" for="inputPassword"></label>
+        <span asp-validation-for="Password" class="text-danger"></span>
+    </div>
+    <div class="row mx-auto">
+        <button class="btn btn-lg btn-success" type="submit">Sign in</button>
+    </div>
+    <a class="d-block ms-auto text-end mt-3" asp-action="Signup" asp-controller="Account" asp-route-returnUrl="@Model.ReturnUrl">Sign up</a>
+    <p class="mt-5 mb-3 text-muted text-center">Ilmhub © @DateTimeOffset.Now.Year</p>
 </form>

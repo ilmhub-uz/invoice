@@ -1,50 +1,40 @@
-@model NewContactViewModel
+@model ContactViewModel
 
 @{
-    Layout = "_AuthLayout";
+  Layout = "_Layout";
 }
 
-
-<div class="contanier show">
-  <h2 class="mb-4">Contact qushish</h2>
-<form class="form-signin" method="post" asp-action="Create" asp-controller="Contacts">
-<div class="text-center mb-4">
-        <h1 class="h3 mb-3 font-weight-normal">Invoice</h1>
+<div class="card card-solid">
+<div class="card-body pb-0">
+<div class="row">
+<div class="col-12 col-sm-6 col-md-4 d-flex align-items-stretch flex-column">
+    <div class="card bg-light d-flex flex-fill">
+        <div class="card-body pt-0">
+            <div class="row">
+                <div class="col-7">
+                    <h5 class="list-inline-item mt-2"><b>@Model.Name</b></h5>
+                    <ul class="ml-4 mb-0 mt-3 fa-ul text-muted">
+                        <li class="small mb-2"><span class="fa-li">
+                                    <i class="fas fa-building mr-2"></i></span> Address: @Model.Address</li>
+                        <li class="small mb-2"><span class="fa-li">
+                                    <i class="fas fa-envelope mr-2"></i></span> Email: @Model.Email</li>
+                        <li class="small"><span class="fa-li"><i
+                                    class="fas fa-lg fa-phone mr-2"></i></span> Phone : @Model.Phone </li>
+                    </ul>
+                </div>
+            
+            </div>
+        </div>
+        <div class="card-footer">
+            <div class="text-right">
+                
+                <a href="/contacts/show" class="btn btn-sm btn-primary">
+                    <i class="fas fa-user"></i> Kontaktni ko'rish
+                </a>
+            </div>
+        </div>
     </div>
-
-    <div class="form-label-group">
-        <input asp-for="Name" type="text" id="inputName" class="form-control" placeholder="Name" required="" autofocus="true">
-        <label class="text-muted" asp-for="Name" for="inputName"></label>
-        <span asp-validation-for="Name" class="text-danger show"></span>
-    </div>
-
-    <div class="form-label-group">
-        <input asp-for="Address" type="text" id="inputName" class="form-control" placeholder="Name" required="true">
-        <label class="text-muted" asp-for="Address" for="inputBirthdate"></label>
-        <span asp-validation-for="Address" class="text-danger"></span>
-    </div>
-
-    <div class="form-label-group">
-        <input asp-for="Email" type="email" id="inputEmail" class="form-control" placeholder="Email address" required="">
-        <label class="text-muted" asp-for="Email" for="inputEmail"></label>
-        <span asp-validation-for="Email" class="text-danger"></span>
-    </div>
-
-    <div class="form-label-group">
-        <input asp-for="Phone" type="tel" id="inputPhone" class="form-control" placeholder="Phone" required="">
-        <label class="text-muted" asp-for="Phone" for="inputPhone"></label>
-        <span asp-validation-for="Phone" class="text-danger"></span>
-    </div>
-
-    <div class="form-label-group">
-        <input asp-for="Owner" type="name" id="inputName" class="form-control" placeholder="Name" required="">
-        <label class="text-muted" asp-for="Name" for="inputName"></label>
-        <span asp-validation-for="Name" class="text-danger"></span>
-    </div>
-    
-    <div class="row mx-auto">
-        <button class="btn btn-lg btn-success" type="submit">Qushish</button>
-    </div>
-    <p class="mt-5 mb-3 text-muted text-center">Invoice © @DateTimeOffset.Now.Year</p>
-</form>
+</div>
+</div>
+</div>
 </div>

@@ -1,6 +1,8 @@
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using webapp.Data;
+using webapp.Entity;
 using webapp.Extensions;
 using webapp.ViewModel;
 
@@ -10,14 +12,16 @@ public class ContactsController : Controller
 {
     private readonly ILogger _logger;
     private readonly AppDbContext _dbcontext;
+    private readonly UserManager<AppUser> _use;
 
-    public ContactsController(ILogger<ContactsController> logger, AppDbContext dbcontext)
+    public ContactsController(ILogger<ContactsController> logger, AppDbContext dbcontext, UserManager<AppUser> usermanager)
     {
         _logger = logger;
         _dbcontext = dbcontext;
+        _use = usermanager;
     }
 
-    [HttpGet]
+   [HttpGet]
     public IActionResult Index()
     {
         return View();
@@ -150,4 +154,5 @@ public class ContactsController : Controller
         await _dbcontext.SaveChangesAsync();
         return RedirectToAction("list");
     }
+
 }
