@@ -17,7 +17,6 @@ public class Seed : BackgroundService
     public Seed(
         IServiceProvider provider,
         ILogger<Seed> logger,
-        IConfiguration conf,
         IOptionsMonitor<SeedDataOptions> optionsMonitor)
     {
         _provider = provider;
@@ -35,8 +34,6 @@ public class Seed : BackgroundService
         var ctx = scope.ServiceProvider.GetRequiredService<AppDbContext>();
         var migrateDb = conf.GetValue<bool>("MigrateDatabase");
 
-        var seedData = conf.GetValue<bool>("SeedData");
-        
         _logger.LogInformation($"Database Migration option: {migrateDb}");
         if(migrateDb)
         {
@@ -56,76 +53,73 @@ public class Seed : BackgroundService
         {
             if(!await _roleM.RoleExistsAsync(role))
             {
-                await _roleM.CreateAsync(new IdentityRole<Guid>(role));
-                    _logger.LogInformation($"Create Role...");
+                await _roleM.CreateAsync(new IdentityRole<Guid>(role.ToLower()));
+                _logger.LogInformation("Created role ", role.ToUpper());
             }
         }
 
         foreach (var user in _options.Users)
         {
-            if((await _userM.FindByEmailAsync(user.Email)) == null)
+            if((await _userM.Users.AnyAsync(u => u.Email == user.Email)))
             {
-                var newUser = new AppUser()
-                {
-                    Email = user.Email,
-                    UserName = user.Username,
-                    Fullname = user.Fullname,
-                    PhoneNumber = user.Phone
-                };
+                _logger.LogInformation("User already exists so not seeding: ", user.Email);
+                continue;
+            }
 
-                var creationResult = await _userM.CreateAsync(newUser, user.Password);
-                
-                if(creationResult.Succeeded)
-                {
-                    _logger.LogInformation($"{user.Email} has been added");
-                }
-                else
-                {
-                    _logger.LogCritical($"{user.Email} has been failed to be created");
-                }
+            var newUser = new AppUser()
+            {
+                Email = user.Email,
+                UserName = user.Username,
+                Fullname = user.Fullname,
+                PhoneNumber = user.Phone
+            };
 
-                if(user.Roles.Count() < 1)
+            var creationResult = await _userM.CreateAsync(newUser, user.Password);
+            if(creationResult.Succeeded)
+            {
+                _logger.LogInformation("User seeding succeded", user.Email);
+            }
+            else
+            {
+                _logger.LogCritical("User seeding failed", user.Email);
+            }
+
+            if(user.Roles?.Count() > 0)
+            {
+                foreach (var role in user.Roles)
                 {
-                    foreach (var role in user.Roles)
+                    if(await _roleM.RoleExistsAsync(role.ToLower()) && !await _userM.IsInRoleAsync(newUser, role.ToLower()))
                     {
                         var roleResponse = await _userM.AddToRoleAsync(newUser, role);
-                        if(roleResponse.Succeeded)
-                        {
-                            _logger.LogInformation($"{user.Email} has been successfully added to role {role}");
-                        }
-                        else
-                        {
-                            _logger.LogCritical($"{user.Email} has been failed to be added to role {role}");
-                        }
                     }
                 }
-                // ownerId = (newUser.Id);
-        var OrganizationOption = conf.GetValue<OrganizationOption>("OrganizationOption");
-        var owner = await _userM.FindByEmailAsync(OrganizationOption.Email);
-        await ctx.Organizations.AddAsync(new Organization()
-        {
-            Id = Guid.NewGuid(),
-            Name = OrganizationOption.Name,
-            Address = OrganizationOption.Address,
-            Email = OrganizationOption.Email,
-            Phone = OrganizationOption.Phone,
-            OwnerId = owner.Id,
-            Owner = newUser
-            
-        });
-        await ctx.SaveChangesAsync();
-
-        await ctx.Contacts.AddAsync(new Contact()
-        {
-            Id = Guid.NewGuid(),
-            Name = OrganizationOption.Name,
-            Address = OrganizationOption.Address,
-            Email = OrganizationOption.Email,
-            Phone = OrganizationOption.Phone,
-        });
-
-        await ctx.SaveChangesAsync();
             }
+        }
+
+
+        foreach(var org in _options.Organizations)
+        {
+            var owner = await _userM.FindByEmailAsync(org.OwnerEmail);
+            if(owner == null) continue;
+
+            if(await ctx.Organizations.AnyAsync(o => o.Email == org.Email))
+            {
+                continue;
+            }
+
+            Organization newOrg = new()
+            {
+                Id = Guid.NewGuid(),
+                Name = org.Name,
+                Email = org.Email,
+                Address = org.Address,
+                Phone = org.Phone,
+                OwnerId = owner.Id
+            };
+
+            await ctx.Organizations.AddAsync(newOrg);
+            await ctx.SaveChangesAsync();
+
         }
     }
 }
