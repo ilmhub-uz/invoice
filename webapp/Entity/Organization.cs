@@ -28,4 +28,17 @@ public class Organization
    public virtual AppUser Owner { get; set; }
    
    public virtual ICollection<Invoice> Invoices { get; set; }
+
+   [Obsolete("Used only for entity binding.", true)]
+    public Organization() { }
+
+    public Organization(string name, string address, string phone, string email, Guid ownerId)
+    {
+        Id = Guid.NewGuid();
+        Name = name;
+        Address = address;
+        Phone = phone;
+        Email = email;
+        OwnerId = ownerId;
+    }
 }
