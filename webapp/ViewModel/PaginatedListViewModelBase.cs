@@ -1,4 +1,4 @@
-namespace webapp.ViewModels;
+namespace webapp.ViewModel;
 
 public class PaginatedListViewModel<T>
 {
