@@ -1,83 +1,154 @@
-﻿<!DOCTYPE html>
-<html lang="en">
+﻿<html lang="en" style="height: auto;">
 
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet"href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
-    <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
-    <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
-    <link rel="stylesheet" href="dist/css/adminlte.min.css">    
-    <link rel="stylesheet" href="dist/css/login.css">
-    <link rel="stylesheet" href="dist/css/adminlte.min.css">    
-    <link rel="stylesheet" href="dist/css/login.css">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&amp;display=fallback">
     <link rel="stylesheet" href="../../plugins/fontawesome-free/css/all.min.css">
-    <link rel="stylesheet" href="../../plugins/icheck-bootstrap/icheck-bootstrap.min.css">
+    <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <link rel="stylesheet" href="plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">
+    <link rel="stylesheet" href="plugins/icheck-bootstrap/icheck-bootstrap.min.css">
+    <link rel="stylesheet" href="plugins/jqvmap/jqvmap.min.css">
     <link rel="stylesheet" href="../../dist/css/adminlte.min.css">
-    <link rel="stylesheet" href="~/dist/css/account.css" asp-append-version="true" />
-     <link rel="stylesheet" href="../../dist/css/paginations.css">
-     
+    <link rel="stylesheet" href="dist/css/site.css">
+    <link rel="stylesheet" href="plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
+    <link rel="stylesheet" href="plugins/daterangepicker/daterangepicker.css">
+    <link rel="stylesheet" href="plugins/summernote/summernote-bs4.min.css">
 </head>
 
-<body class="hold-transition sidebar-mini">
-    <header>
-        <div class="wrapper">
+<body class="sidebar-mini layout-fixed bg-gray" style="height: auto;">
+    <div class="wrapper">
 
-            <aside class="main-sidebar sidebar-dark-primary elevation-4 position-fixed">
-                <a href="/" class="brand-link">
-                    <img src="~/images.jpg" class="brand-image img-circle elevation-3" style="opacity: .8">
-                    <span class="brand-text font-weight-light">Invoice</span>
-                </a>      
-
-                <div class="nav flex-column nav-pills mt-3" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-
-                    <a class="nav-link active mx-2" id="v-pills-home-tab" data-toggle="pill" href="#" role="tab"
-                        aria-controls="v-pills-home" aria-selected="true">
-                                    <i class="fas fa-file-invoice fa-lg mx-2"></i>
-                        <h6 class="list-inline-item mx-1" style="size: 30px;">Invoicelar</h6>
-                    </a>
-
-                    <a class="nav-link mx-2" id="v-pills-profile-tab" data-toggle="pill" href="#" role="tab"
-                        aria-controls="v-pills-profile" aria-selected="false"> 
-                                    <i class="fas fa-warehouse mx-2"></i>
-                        <h6 class="list-inline-item mx-1" style="size: 30px;">Korxonalar</h6>
-                    </a>
-
-                    <a class="nav-link mx-2" id="v-pills-messages-tab" data-toggle="pill" href="#" role="tab"
-                    
-                        aria-controls="v-pills-messages" aria-selected="false">
-                                    <i class="fas fa-id-card-alt mx-2"></i>
-                        <h6 class="list-inline-item mx-1" style="size: 30px;">Kantaktlar</h6>
-                    </a>
-
-                    <a class="nav-link mx-2" id="v-pills-settings-tab" data-toggle="pill" href="#" role="tab"
-                        aria-controls="v-pills-settings" aria-selected="false">
-                                    <i class="fas fa-chart-pie mx-2"></i>
-                        <h6 class="list-inline-item mx-1" style="size: 30px;">Statistika</h6>
-                    </a>
-                </div>
-
-            </aside>
+        <div class="preloader flex-column justify-content-center align-items-center bg-dark" style="height: 0px;">
+            <img class="animation__shake" src="dist/img/logo.svg" alt="logo" height="60" width="60"
+                style="display: none;">
         </div>
-    </header>
 
-    <div class="container">
-        <main role="main" class="pb-3">
-          @RenderBody()
-        </main>
+        <nav class="main-header navbar navbar-expand navbar-gray-dark navbar-dark">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
+                </li>
+            </ul>
+        </nav>
+        @RenderBody()
+
+        <aside class="main-sidebar main-sidebar-custom sidebar-dark-primary">
+            <a href="#" class="brand-link px-5 pt-3">
+                <img src="logo.svg" alt="Invoice" class="brand-image animation__wobble">
+                <span class="brand-text font-weight-bolder">Invoice</span>
+            </a>
+
+            <div
+                class="sidebar os-host os-theme-light os-host-resize-disabled os-host-scrollbar-horizontal-hidden os-host-scrollbar-vertical-hidden os-host-transition">
+                <div class="os-resize-observer-host observed">
+                    <div class="os-resize-observer" style="left: 0px; right: auto;"></div>
+                </div>
+                <div class="os-size-auto-observer observed" style="height: calc(100% + 1px); float: left;">
+                    <div class="os-resize-observer"></div>
+                </div>
+                <div class="os-content-glue"></div>
+                <div class="os-padding">
+                    <div class="os-viewport os-viewport-native-scrollbars-invisible">
+                        <div class="os-content" style="padding: 0px 8px; height: 100%; width: 100%;">
+                            <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+                                <div class="image">
+                                    <img src="https://avatars.dicebear.com/api/male/2.svg?background=transparent"
+                                        class="img-circle" alt="User Image">
+                                </div>
+                                <div class="info">
+                                    <a href="#" class="d-block">Wahid Abduhakimov</a>
+                                </div>
+                            </div>
+
+                            <nav class="mt-2">
+                                <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
+                                    data-accordion="false">
+
+                                    <li class="nav-item">
+                                        <a href="#" class="nav-link">
+                                            <i class="nav-icon fas fa-file-invoice-dollar"></i>
+                                            <p>
+                                                Invoyslar
+                                            </p>
+                                        </a>
+                                    </li>
+
+                                    <li class="nav-item">
+                                        <a href="#" class="nav-link">
+                                            <i class="nav-icon fas fa-business-time"></i>
+                                            <p>
+                                                Firmalar
+                                            </p>
+                                        </a>
+                                    </li>
+
+                                    <li class="nav-item">
+                                        <a href="#" class="nav-link">
+                                            <i class="nav-icon fas fa-user-friends"></i>
+                                            <p>
+                                                Kontaktlar
+                                            </p>
+                                        </a>
+                                    </li>
+
+                                </ul>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+                <div class="os-scrollbar os-scrollbar-horizontal os-scrollbar-unusable os-scrollbar-auto-hidden">
+                    <div class="os-scrollbar-track">
+                        <div class="os-scrollbar-handle" style="width: 100%; transform: translate(0px, 0px);"></div>
+                    </div>
+                </div>
+                <div class="os-scrollbar os-scrollbar-vertical os-scrollbar-unusable os-scrollbar-auto-hidden">
+                    <div class="os-scrollbar-track">
+                        <div class="os-scrollbar-handle" style="height: 100%; transform: translate(0px, 0px);"></div>
+                    </div>
+                </div>
+                <div class="os-scrollbar-corner"></div>
+            </div>
+
+            <div class="sidebar-custom">
+                <a href="#" class="btn btn-link font-weight-bold d-flex justify-content-center">
+                    <i class="fas fa-sign-out-alt fa-2x"></i>
+                </a>
+            </div>
+
+        </aside>
+
+
+        <aside class="control-sidebar control-sidebar-dark">
+        </aside>
+        <div id="sidebar-overlay"></div>
     </div>
 
     <script src="plugins/jquery/jquery.min.js"></script>
+    <script src="plugins/jquery-ui/jquery-ui.min.js"></script>
+    <script>
+        $.widget.bridge('uibutton', $.ui.button)
+    </script>
     <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="plugins/chart.js/Chart.min.js"></script>
+    <script src="plugins/sparklines/sparkline.js"></script>
+    <script src="plugins/jqvmap/jquery.vmap.min.js"></script>
+    <script src="plugins/jqvmap/maps/jquery.vmap.usa.js"></script>
+    <script src="plugins/jquery-knob/jquery.knob.min.js"></script>
+    <script src="plugins/moment/moment.min.js"></script>
+    <script src="plugins/daterangepicker/daterangepicker.js"></script>
+    <script src="plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"></script>
+    <script src="plugins/summernote/summernote-bs4.min.js"></script>
+    <script src="plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
     <script src="dist/js/adminlte.js"></script>
+    <script src="dist/js/site.js"></script>
+    <script src="dist/js/pages/dashboard.js"></script>
 
-    <script src="dist/js/pages/dashboard3.js"></script>
-       <script src="plugins/jquery/jquery.min.js"></script>
-    <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-    <script src="dist/js/adminlte.js"></script>
-    @await RenderSectionAsync("Scripts", required: false)
-    @Html.Partial("_ValidationScriptsPartial")
+
+    <div class="jqvmap-label" style="display: none;"></div>
 </body>
+
 
 </html>

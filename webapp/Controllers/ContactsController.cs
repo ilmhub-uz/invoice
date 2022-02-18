@@ -28,7 +28,7 @@ public class ContactsController : Controller
     }
 
     [HttpGet]
-    public async Task<IActionResult> List(int page = 1, int limit = 10)
+    public async Task<IActionResult> List(int page = 1, int limit = 9)
     {
         var contacts = await _dbcontext.Contacts
         .Skip((page - 1) * limit)
@@ -46,7 +46,7 @@ public class ContactsController : Controller
             return NotFound();
         }
 
-        var totalContacts = contacts.Count();
+        var totalContacts = _dbcontext.Contacts.Count();
 
         return View(new ContactListViewModel()
         {

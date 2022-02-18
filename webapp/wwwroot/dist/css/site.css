@@ -1,0 +1,68 @@
+.input-wrapper {
+    border: dashed 3px #00000022;
+    background-color: #cccccc11;
+    box-shadow: none;
+}
+
+.input-wrapper:hover {
+    border: solid 3px #00003322;
+    border-radius: 10px;
+    box-shadow: 6px 6px 0px 0px #00000022;
+}
+
+.input-wrapper-noborder {
+    background-color: #cccccc11;
+    border: solid 0px transparent;
+    border-radius: 10px;
+}
+
+.input-wrapper-noborder:hover {
+    /* border: solid 3px #00003322; */
+    border-radius: 10px;
+    box-shadow: none;
+}
+
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}
+
+input:focus,
+select:focus,
+textarea:focus,
+button:focus {
+    outline: none;
+}
+
+input::-webkit-input-placeholder {
+    opacity: .2;
+}
+
+input:-moz-placeholder {
+    opacity: .2;
+}
+
+.table th, .table td { 
+    border-top: none !important; 
+}
+.coloress
+{  
+    border: dashed 5x #00000022;
+    background-color: #BDBDBD;
+}
+
+.bekzod
+{
+    background-color: #333;
+}
+
+.rang {
+    background-color: #333;
+}
