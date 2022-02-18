@@ -104,6 +104,7 @@ public class Seed : BackgroundService
 
             if(await ctx.Organizations.AnyAsync(o => o.Email == org.Email))
             {
+                _logger.LogInformation("Organization already exists so not seeding: ", owner.Email);
                 continue;
             }
 
@@ -119,7 +120,34 @@ public class Seed : BackgroundService
 
             await ctx.Organizations.AddAsync(newOrg);
             await ctx.SaveChangesAsync();
+            _logger.LogInformation("Organization seeding succeded", owner.Email);
 
+        }
+
+        foreach(var org in _options.Contacts)
+        {
+            var owner = await _userM.FindByEmailAsync(org.OwnerEmail);
+            if(owner == null) continue;
+
+            if(await ctx.Contacts.AnyAsync(o => o.Email == org.Email))
+            {
+                _logger.LogInformation("Contact already exists so not seeding: ", owner.Email);
+                continue;
+            }
+
+            Contact newContact = new()
+            {
+                Id = Guid.NewGuid(),
+                Name = org.Name,
+                Email = org.Email,
+                Address = org.Address,
+                Phone = org.Phone,
+                OwnerId = owner.Id
+            };
+
+            await ctx.Contacts.AddAsync(newContact);
+            await ctx.SaveChangesAsync();
+            _logger.LogInformation("Contact seeding succeded", owner.Email);
         }
     }
 }
