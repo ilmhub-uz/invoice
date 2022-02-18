@@ -8,3 +8,7 @@ Logging uchun quyidagi qoidalarga amal qiling.
 - Exception yuz berganda log qilayotganingizda exception objectni ham Loggerga berish kerak
   - masalan: `catch(Exception exception) { _logger.LogError(exception, "bla bla bla"); }`
 - 
+
+
+### Contributors
+[![Contributors Display](https://badges.pufler.dev/contributors/ilmhub-uz/invoice?size=50&padding=-5&bots=true)](https://github.com/ilmhub-uz)
