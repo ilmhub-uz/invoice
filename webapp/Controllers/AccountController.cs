@@ -45,13 +45,12 @@ public class AccountController : Controller
             return View(model);
         }
 
-        var user = new AppUser()
-        {
-            Fullname = model.Fullname,
-            Email = model.Email,
-            PhoneNumber = model.Phone,
-            UserName = model.Email.Substring(0, model.Email.IndexOf('@'))
-        };
+        var user = new AppUser(
+            model.Fullname,
+            model.Email,
+            model.Phone,
+            model.Email.Substring(0, model.Email.IndexOf('@'))
+        );
 
         await _userManager.CreateAsync(user, model.Password);
 
