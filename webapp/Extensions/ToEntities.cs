@@ -6,13 +6,11 @@ public static class ToEntities
 {
    public static Contact ToContactEntity( this NewContactViewModel model)
    {
-       return new Contact(){
-        Id=model.Id,
-        Name=model.Name,
-        Address=model.Address,
-        Email=model.Email,
-        Phone=model.Phone,
-        Owner=model.Owner
-       };
+       return new Contact(
+            model.Name,
+            model.Address, 
+            model.Phone, 
+            model.Email, 
+            model.Owner.Id);
    }
 }
