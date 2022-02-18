@@ -2,6 +2,7 @@ using webapp.Data;
 using Microsoft.EntityFrameworkCore;
 using webapp.Entity;
 using Microsoft.AspNetCore.Identity;
+using webapp.Options;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -22,6 +23,8 @@ builder.Services.AddIdentity<AppUser, IdentityRole<Guid>>(options =>
 })
 .AddEntityFrameworkStores<AppDbContext>();
 
+builder.Services.AddHostedService<Seed>();
+
 builder.Services.AddControllersWithViews();
 builder.Services.ConfigureApplicationCookie(options =>
 {
@@ -30,6 +33,8 @@ builder.Services.ConfigureApplicationCookie(options =>
     options.LogoutPath = "/account/logout";
     
 });
+
+builder.Services.Configure<SeedDataOptions>(builder.Configuration.GetSection("SeedDataOptions"));
 
 builder.Services.AddControllersWithViews();
 
