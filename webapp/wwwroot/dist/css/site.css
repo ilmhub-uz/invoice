@@ -52,3 +52,17 @@ input:-moz-placeholder {
 .table th, .table td { 
     border-top: none !important; 
 }
+.coloress
+{  
+    border: dashed 5x #00000022;
+    background-color: #BDBDBD;
+}
+
+.bekzod
+{
+    background-color: #333;
+}
+
+.rang {
+    background-color: #333;
+}

@@ -4,7 +4,7 @@ using webapp.Entity;
 
 namespace webapp.ViewModel
 {
-    public class EditContactViewModel
+ public class EditContactViewModel
     {
         [Key]
         public Guid Id { get; set; }

@@ -1,0 +1,305 @@
+<html lang="en" style="height: auto;"><head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AdminLTE 3 | Dashboard</title>
+
+  <!-- Google Font: Source Sans Pro -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&amp;display=fallback">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
+  <!-- Ionicons -->
+  <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+  <!-- Tempusdominus Bootstrap 4 -->
+  <link rel="stylesheet" href="plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">
+  <!-- iCheck -->
+  <link rel="stylesheet" href="plugins/icheck-bootstrap/icheck-bootstrap.min.css">
+  <!-- JQVMap -->
+  <link rel="stylesheet" href="plugins/jqvmap/jqvmap.min.css">
+  <!-- Theme style -->
+  <link rel="stylesheet" href="dist/css/adminlte.min.css">
+  <link rel="stylesheet" href="dist/css/site.css">
+  <!-- overlayScrollbars -->
+  <link rel="stylesheet" href="plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
+  <!-- Daterange picker -->
+  <link rel="stylesheet" href="plugins/daterangepicker/daterangepicker.css">
+  <!-- summernote -->
+  <link rel="stylesheet" href="plugins/summernote/summernote-bs4.min.css">
+</head>
+<body class="sidebar-mini layout-fixed bg-gray" style="height: auto;">
+<div class="wrapper">
+
+  <!-- Preloader -->
+  <div class="preloader flex-column justify-content-center align-items-center bg-dark" style="height: 0px;">
+    <img class="animation__shake" src="dist/img/logo.svg" alt="logo" height="60" width="60" style="display: none;">
+  </div>
+
+  <!-- Navbar -->
+  <nav class="main-header navbar navbar-expand navbar-gray-dark navbar-dark">
+    <!-- Left navbar links -->
+    <ul class="navbar-nav">
+      <li class="nav-item">
+        <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
+      </li>
+    </ul>
+  </nav>
+  <!-- /.navbar -->
+
+  <!-- Main Sidebar Container -->
+  <aside class="main-sidebar main-sidebar-custom sidebar-dark-primary">
+    <!-- Brand Logo -->
+    <a href="#" class="brand-link px-5 pt-3">
+      <img src="dist/img/logo.svg" alt="AdminLTE Logo" class="brand-image animation__wobble">
+      <span class="brand-text font-weight-bolder">Invoice</span>
+    </a>
+
+    <!-- Sidebar -->
+    <div class="sidebar os-host os-theme-light os-host-resize-disabled os-host-scrollbar-vertical-hidden os-host-transition os-host-scrollbar-horizontal-hidden"><div class="os-resize-observer-host observed"><div class="os-resize-observer" style="left: 0px; right: auto;"></div></div><div class="os-size-auto-observer observed" style="height: calc(100% + 1px); float: left;"><div class="os-resize-observer"></div></div><div class="os-content-glue" style="margin: 0px -8px; width: 249px; height: 790px;"></div><div class="os-padding"><div class="os-viewport os-viewport-native-scrollbars-invisible" style=""><div class="os-content" style="padding: 0px 8px; height: 100%; width: 100%;">
+      <!-- Sidebar user panel (optional) -->
+      <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+        <div class="image">
+          <img src="https://avatars.dicebear.com/api/male/2.svg?background=transparent" class="img-circle" alt="User Image">
+        </div>
+        <div class="info">
+          <a href="#" class="d-block">Wahid Abduhakimov</a>
+        </div>
+      </div>
+
+      <!-- Sidebar Menu -->
+      <nav class="mt-2">
+        <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+          <!-- Add icons to the links using the .nav-icon class
+               with font-awesome or any other icon font library -->
+
+          <li class="nav-item">
+            <a href="#" class="nav-link">
+              <i class="nav-icon fas fa-file-invoice-dollar"></i>
+              <p>
+                Invoyslar
+              </p>
+            </a>
+          </li>
+
+          <li class="nav-item">
+            <a href="#" class="nav-link">
+              <i class="nav-icon fas fa-business-time"></i>
+              <p>
+                Firmalar
+              </p>
+            </a>
+          </li>
+          
+          <li class="nav-item">
+            <a href="#" class="nav-link">
+              <i class="nav-icon fas fa-user-friends"></i>
+              <p>
+                Kontaktlar
+              </p>
+            </a>
+          </li>
+
+        </ul>
+      </nav>
+      <!-- /.sidebar-menu -->
+    </div></div></div><div class="os-scrollbar os-scrollbar-horizontal os-scrollbar-unusable os-scrollbar-auto-hidden"><div class="os-scrollbar-track"><div class="os-scrollbar-handle" style="width: 100%; transform: translate(0px, 0px);"></div></div></div><div class="os-scrollbar os-scrollbar-vertical os-scrollbar-unusable os-scrollbar-auto-hidden"><div class="os-scrollbar-track"><div class="os-scrollbar-handle" style="height: 100%; transform: translate(0px, 0px);"></div></div></div><div class="os-scrollbar-corner"></div></div>
+    <!-- /.sidebar -->
+
+    <div class="sidebar-custom">
+      <a href="#" class="btn btn-link font-weight-bold d-flex justify-content-center">
+        <i class="fas fa-sign-out-alt fa-2x"></i>
+        <!-- <p class="font-weight-bold hide-on-collapse d-inline"> Logout</p> -->
+      </a>
+    </div>
+
+  </aside>
+
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper bg-gray" style="min-height: 855px;">
+    <section class="content">
+      <div class="container-fluid">
+        <div class="row mt-4">
+          <div class="col-md-8 mx-auto">
+            <div class="card card-gray-dark shadow-none">
+              <div class="card-header">
+                <h3 class="card-title text-gray">INVOYS YARATISH</h3>
+              </div>
+              <!-- /.card-header -->
+              <!-- form start -->
+              <!-- <form> -->
+                <div class="card-body bg-dark">
+                  <div class="row">
+                    <div class=" col-md-6">
+                      <div class="input-wrapper m-1">
+                        <span class="text-gray ml-2 mt-3">DAN</span>
+                        <div class="card-body d-flex align-items-center pt-1">
+                          <i class="nav-icon fas fa-user-friends fa-3x text-gray-dark"></i>
+                          <p class="ml-3 h2 text-gray">Jo'natuvchi nomi</p>
+                        </div>
+                      </div>
+                    </div>
+                    <div class=" col-md-6">
+                      <div class="input-wrapper m-1">
+                        <span class="text-gray ml-2 mt-3">GA</span>
+                        <div class="card-body d-flex align-items-center pt-1">
+                          <i class="nav-icon fas fa-user fa-3x text-gray-dark"></i>
+                          <p class="ml-3 h2 text-gray">Oluvchi nomi</p>
+                        </div>
+                      </div>
+                    </div>
+                  
+                  </div>
+                  <hr class="mx-auto bg-gray" style="width: 80%;">
+                  
+                  <div class="row">
+                    <div class="col-md-6">
+                      <span class="text-gray ml-2 mt-3 d-block">INVOYS SANASI</span>
+                      <input class="input-wrapper w-100 p-3 h4 datetimepicker-input" type="date">
+                    </div>
+                    <div class="col-md-6">
+                      <span class="text-gray ml-2 mt-3 d-block">TO'LOV SANASI</span>
+                      <input class="input-wrapper w-100 p-3 h4" type="date">
+                    </div>
+                  </div>
+                  <hr class="mx-auto bg-gray" style="width: 80%;">
+
+                  <div class="card input-wrapper" style="border-radius: 10px;">
+                    <div class="card-header">
+                      <h3 class="card-title text-gray">MAHSULOTLAR QO'SHISH</h3>
+                    </div>
+                    <!-- /.card-header -->
+                    <div class="card-body p-0">
+                      <table class="table table-striped" id="items-table">
+                        <thead>
+                          <tr class="text-gray">
+                            <th>NOMI</th>
+                            <th>MIQDORI</th>
+                            <th>NARXI</th>
+                            <th>JAMI</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            <td class="w-25">
+                              <input placeholder="Macbook Pro" type="text" class="item-input input-wrapper-noborder p-2 text-light">
+                            </td>
+                            <td class="w-25">
+                              <input placeholder="27" type="number" class="item-input w-75 input-wrapper-noborder p-2 text-light">
+                            </td>
+                            <td class="w-25">
+                              <input placeholder="1235" type="number" class="item-input w-75 input-wrapper-noborder p-2 text-light">
+                            </td>
+                            <td class="w-25">
+                              <h4 class="text-gray">$ 1253</h4>
+                            </td>
+                          </tr>
+                        <tr>
+<td class="w-25">
+  <input placeholder="Macbook Pro" type="text" class="item-input input-wrapper-noborder p-2 text-light">
+</td>
+<td class="w-25">
+  <input placeholder="27" type="number" class="item-input w-75 input-wrapper-noborder p-2 text-light">
+</td>
+<td class="w-25">
+  <input placeholder="1235" type="number" class="item-input w-75 input-wrapper-noborder p-2 text-light">
+</td>
+<td class="w-25">
+  <h4 class="text-gray">$ 1253</h4>
+</td>
+</tr><tr>
+<td class="w-25">
+  <input placeholder="Macbook Pro" type="text" class="item-input input-wrapper-noborder p-2 text-light">
+</td>
+<td class="w-25">
+  <input placeholder="27" type="number" class="item-input w-75 input-wrapper-noborder p-2 text-light">
+</td>
+<td class="w-25">
+  <input placeholder="1235" type="number" class="item-input w-75 input-wrapper-noborder p-2 text-light">
+</td>
+<td class="w-25">
+  <h4 class="text-gray">$ 1253</h4>
+</td>
+</tr><tr>
+<td class="w-25">
+  <input placeholder="Macbook Pro" type="text" class="item-input input-wrapper-noborder p-2 text-light">
+</td>
+<td class="w-25">
+  <input placeholder="27" type="number" class="item-input w-75 input-wrapper-noborder p-2 text-light">
+</td>
+<td class="w-25">
+  <input placeholder="1235" type="number" class="item-input w-75 input-wrapper-noborder p-2 text-light">
+</td>
+<td class="w-25">
+  <h4 class="text-gray">$ 1253</h4>
+</td>
+</tr></tbody>
+                      </table>
+                      
+                      <div class="row w-100">
+                        <button id="add-item-row" class="btn btn-secondary m-3 w-25 ml-auto" style="opacity: .5;" disabled="disabled">
+                          <i class="fas fa-plus"></i>
+                        </button>
+                      </div>
+                    </div>
+                    <!-- /.card-body -->
+                  </div>
+
+                </div>
+                <!-- /.card-body -->
+  
+                <div class="card-footer bg-dark">
+                  <button type="submit" class="btn btn-primary">Submit</button>
+                </div>
+              <!-- </form> -->
+            </div>
+          </div>
+          
+        </div>
+      </div>
+    </section>
+  </div>
+  <!-- /.content-wrapper -->
+  <!-- Control Sidebar -->
+  <aside class="control-sidebar control-sidebar-dark">
+    <!-- Control sidebar content goes here -->
+  </aside>
+  <!-- /.control-sidebar -->
+<div id="sidebar-overlay"></div></div>
+<!-- ./wrapper -->
+
+<!-- jQuery -->
+<script src="plugins/jquery/jquery.min.js"></script>
+<!-- jQuery UI 1.11.4 -->
+<script src="plugins/jquery-ui/jquery-ui.min.js"></script>
+<!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
+<script>
+  $.widget.bridge('uibutton', $.ui.button)
+</script>
+<!-- Bootstrap 4 -->
+<script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<!-- ChartJS -->
+<script src="plugins/chart.js/Chart.min.js"></script>
+<!-- Sparkline -->
+<script src="plugins/sparklines/sparkline.js"></script>
+<!-- JQVMap -->
+<script src="plugins/jqvmap/jquery.vmap.min.js"></script>
+<script src="plugins/jqvmap/maps/jquery.vmap.usa.js"></script>
+<!-- jQuery Knob Chart -->
+<script src="plugins/jquery-knob/jquery.knob.min.js"></script>
+<!-- daterangepicker -->
+<script src="plugins/moment/moment.min.js"></script>
+<script src="plugins/daterangepicker/daterangepicker.js"></script>
+<!-- Tempusdominus Bootstrap 4 -->
+<script src="plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"></script>
+<!-- Summernote -->
+<script src="plugins/summernote/summernote-bs4.min.js"></script>
+<!-- overlayScrollbars -->
+<script src="plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
+<!-- AdminLTE App -->
+<script src="dist/js/adminlte.js"></script>
+<!-- AdminLTE for demo purposes -->
+<!-- <script src="dist/js/demo.js"></script> -->
+<script src="dist/js/site.js"></script>
+<!-- AdminLTE dashboard demo (This is only for demo purposes) -->
+<script src="dist/js/pages/dashboard.js"></script>
+
+
+<div class="jqvmap-label" style="display: none;"></div></body></html>

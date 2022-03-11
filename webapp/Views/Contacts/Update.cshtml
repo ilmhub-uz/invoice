@@ -1,0 +1,48 @@
+@model EditContactViewModel
+
+@* @{
+  Layout = "_Layout";
+} *@
+<form class="d-flex justify-content-center form-signin" method="post" asp-action="Update" asp-controller="Contacts">
+  <div class="login-box" style="margin-top:70px;">
+    <h1 class="col text-center h3 mb-3 font-weight-normal">Kontakt qo'shish</h1>
+    <div class="card text-white bg-primary mb-3" style="width:1000px height:800px">
+      <div class="card-body login-card-body">
+
+        <div class="form-label-group">
+          <input asp-for="Name" type="text" id="inputName" class="form-control" placeholder="Name" required=""
+            autofocus="true">
+          <label class="text-muted" asp-for="Name" for="inputName"></label>
+          <span asp-validation-for="Name" class="text-danger show"></span>
+        </div>
+
+        <div class="form-label-group">
+          <input asp-for="Address" type="text" id="inputAddress" class="form-control" placeholder="Address" required=""
+            autofocus="true">
+          <label class="text-muted" asp-for="Address" for="inputAddress"></label>
+          <span asp-validation-for="Address" class="text-danger show"></span>
+        </div>
+
+        <div class="form-label-group">
+          <input asp-for="Phone" type="tel" id="inputPhone" class="form-control" placeholder="Phone" required=""
+            autofocus="true">
+          <label class="text-muted" asp-for="Phone" for="inputPhone"></label>
+          <span asp-validation-for="Phone" class="text-danger"></span>
+        </div>
+
+
+        <div class="form-label-group">
+          <input asp-for="Email" type="email" id="inputEmail" class="form-control" placeholder="Email address"
+            required="" autofocus="true">
+          <label class="text-muted" asp-for="Email" for="inputEmail"></label>
+          <span asp-validation-for="Email" class="text-danger"></span>
+        </div>
+
+        <div class="col text-center">
+          <button class="btn btn-outline-success" type="submit">Qo'shish</button>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</form>

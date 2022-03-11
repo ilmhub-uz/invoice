@@ -1,0 +1,115 @@
+@model ContactListViewModel
+
+<html lang="en" style="height: auto;">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="../../plugins/fontawesome-free/css/all.min.css">
+    <link rel="stylesheet" href="../../dist/css/adminlte.min.css">
+    <link rel="stylesheet" href="../../dist/css/site.css">
+
+</head>
+
+@{
+    Layout = "_Layout";
+}
+
+<body class="sidebar  bg-dark" style="padding: 0; width: 500px; height; 500px;">
+
+    <div class="wrapper bg-gray" style="width: 1200px; height; 800px;">
+        <div class="content-wrapper rang" style="width: 1650px; ">
+            <section class="content-header rang">
+                <div class="container-fluid rang ">
+                    <div class="row  ">
+                        <div class="col-sm-6">
+                            <h1>Contacts</h1>
+                        </div>
+                        <div style="margin-left: 600px;">
+                            <a href="/Contacts/Create"><button class="btn btn-outline-primary " type="submit">Kontakt
+                                    Qo'shish</button></a>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <section class="content">
+                <div class="card card-solid">
+                    <div class="card-body pb-0 bg-dark">
+                        <div class="row ">
+                            @foreach (var contact in Model.Contacts)
+                            {
+                                <div class="col-12 col-sm-6 col-md-4 d-flex align-items-stretch flex-column">
+                                    <div class="card bg-light d-flex flex-fill">
+                                        <div class="bekzod card-body pt-0 ">
+                                            <div class="row">
+                                                <div class="col-7">
+                                                    <h5 class="list-inline-item mt-2 text-white"><b>@contact.Name</b></h5>
+                                                    <ul class="ml-4 mb-0 mt-3 fa-ul text-muted">
+                                                        <li class="small mb-2 text-white"><span class="fa-li">
+                                                                <i class="fas fa-building mr-2 text-white"></i></span> Address:
+                                                            @contact.Address</li>
+                                                        <li class="small mb-2 text-white"><span class="fa-li">
+                                                                <i class="fas fa-envelope mr-2"></i></span> Email:
+                                                            @contact.Email</li>
+                                                        <li class="small"><span class="fa-li"><i
+                                                                class="fas fa-lg fa-phone mr-2"></i></span>  Phone :
+                                                            @contact.Phone </li>
+                                                    </ul>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                        <div class="card-header bg-gray">
+                                            <div class="text-right">
+
+                                                <a href="/contacts/show" class="btn btn-sm btn-info">
+                                                    <i class="fas fa-user "></i> Kontaktni ko'rish
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+
+                @{
+                    var prevClass = Model.Page > 1 ? string.Empty : "disabled";
+                    var nextClass = Model.Page >= Model.Pages ? "disabled" : string.Empty;
+                }
+                <div class="card-footer" style="margin-top: auto;">
+                    <nav aria-label="Contacts Page Navigation">
+                        <ul class="pagination justify-content-center m-0">
+                            <li class="page-item @prevClass">
+                                <a class="page-link"
+                                    href="/Contacts/List?page=@(Math.Max(1, Model.Page - 1))&limit=@Model.Limit"
+                                    aria-label="Previous">
+                                    <span aria-hidden="true">&laquo;</span>
+                                </a>
+                            </li>
+                            @for (int i = 1; i <= Model.Pages; i++)
+                            {
+                                var pageActive = i == Model.Page ? "active" : string.Empty;
+                                <li class="page-item @pageActive"><a class="page-link"
+                                    href="/Contacts/List?page=@i&limit=@Model.Limit">@i</a></li>
+                            }
+                            <li class="page-item @nextClass">
+                                <a class="page-link"
+                                    href="/Contacts/List?page=@(Math.Min(Model.Pages, Model.Page + 1))&limit=@Model.Limit"
+                                    aria-label="Next">
+                                    <span aria-hidden="true">&raquo;</span>
+                                </a>
+                            </li>
+                        </ul>
+                </div>
+        </div>
+        </section>
+    </div>
+    <script src="../../plugins/jquery/jquery.min.js"></script>
+    <script src="../../plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="../../dist/js/adminlte.min.js"></script>
+    <script src="../../dist/js/demo.js"></script>
+</body>
+
+</html>

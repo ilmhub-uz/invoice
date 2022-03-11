@@ -1,0 +1,40 @@
+@model NewContactViewModel
+
+@* @{
+  Layout = "_Layout";
+} *@
+
+<div class="card card-solid">
+<div class="card-body pb-0">
+<div class="row">
+<div class="col-12 col-sm-6 col-md-4 d-flex align-items-stretch flex-column">
+    <div class="card bg-light d-flex flex-fill">
+        <div class="card-body pt-0">
+            <div class="row">
+                <div class="col-7">
+                    <h5 class="list-inline-item mt-2"><b>@Model.Name</b></h5>
+                    <ul class="ml-4 mb-0 mt-3 fa-ul text-muted">
+                        <li class="small mb-2"><span class="fa-li">
+                                    <i class="fas fa-building mr-2"></i></span> Address: @Model.Address</li>
+                        <li class="small mb-2"><span class="fa-li">
+                                    <i class="fas fa-envelope mr-2"></i></span> Email: @Model.Email</li>
+                        <li class="small"><span class="fa-li"><i
+                                    class="fas fa-lg fa-phone mr-2"></i></span> Phone : @Model.Phone </li>
+                    </ul>
+                </div>
+            
+            </div>
+        </div>
+        <div class="card-footer">
+            <div class="text-right">
+                
+                <a href="/contacts/show" class="btn btn-sm btn-primary">
+                    <i class="fas fa-user"></i> Kontaktni ko'rish
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+</div>
+</div>
